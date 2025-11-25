@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import axios from '../config/axios'
 import { FiPackage, FiCheckCircle, FiTruck, FiClock, FiSearch, FiPhone, FiMapPin, FiX } from 'react-icons/fi'
 
 const statusConfig = {

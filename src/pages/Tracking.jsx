@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import axios from '../config/axios'
 import { FiSearch, FiPackage, FiMapPin, FiClock, FiCheckCircle, FiTruck, FiBox, FiPhone, FiMail } from 'react-icons/fi'
 
 const statusConfig = {

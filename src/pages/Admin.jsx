@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
+import axios from '../config/axios'
 import { useReactToPrint } from 'react-to-print'
 import { FiPackage, FiUsers, FiPlus, FiEdit2, FiTrash2, FiPrinter, FiX, FiSave, FiCheckCircle, FiTruck, FiClock, FiBox } from 'react-icons/fi'
 
