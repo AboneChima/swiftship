@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
-import db from '../db.js'
+import { query } from '../db.js'
 
-export function authenticateToken(req, res, next) {
+export async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
 
@@ -11,13 +11,13 @@ export function authenticateToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key')
-    const user = db.prepare('SELECT id, name, email, role FROM users WHERE id = ?').get(decoded.userId)
+    const userResult = await query('SELECT id, name, email, role FROM users WHERE id = $1', [decoded.userId])
     
-    if (!user) {
+    if (userResult.rows.length === 0) {
       return res.status(401).json({ message: 'User not found' })
     }
 
-    req.user = user
+    req.user = userResult.rows[0]
     next()
   } catch (err) {
     res.status(403).json({ message: 'Invalid token' })
