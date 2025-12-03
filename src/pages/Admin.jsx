@@ -599,6 +599,17 @@ export default function Admin() {
     }
   }
 
+  const handleDeleteUser = async (id, name) => {
+    if (!confirm(`Are you sure you want to permanently delete user "${name}"? This action cannot be undone.`)) return
+    try {
+      await axios.delete(`/api/admin/users/${id}`)
+      fetchUsers()
+      alert('User deleted successfully')
+    } catch (err) {
+      alert(err.response?.data?.message || 'Error deleting user')
+    }
+  }
+
   const resetForm = () => {
     setFormData({
       tracking_number: '',
@@ -913,7 +924,18 @@ export default function Admin() {
                       {user.role}
                     </span>
                   </div>
-                  <p className="text-gray-400 text-xs">Joined: {new Date(user.created_at).toLocaleDateString()}</p>
+                  <div className="flex items-center justify-between pt-2 border-t border-dark-border">
+                    <p className="text-gray-400 text-xs">Joined: {new Date(user.created_at).toLocaleDateString()}</p>
+                    {user.role !== 'admin' && (
+                      <button 
+                        onClick={() => handleDeleteUser(user.id, user.name)}
+                        className="bg-red-500/10 text-red-400 hover:bg-red-500/20 px-3 py-1 rounded-lg transition flex items-center gap-1 text-xs"
+                      >
+                        <FiTrash2 size={12} />
+                        Delete
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -928,6 +950,7 @@ export default function Admin() {
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Email</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Role</th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Joined</th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -943,6 +966,18 @@ export default function Admin() {
                           </span>
                         </td>
                         <td className="px-6 py-4 text-gray-400">{new Date(user.created_at).toLocaleDateString()}</td>
+                        <td className="px-6 py-4">
+                          {user.role !== 'admin' ? (
+                            <button 
+                              onClick={() => handleDeleteUser(user.id, user.name)}
+                              className="text-red-400 hover:text-red-300 transition"
+                            >
+                              <FiTrash2 />
+                            </button>
+                          ) : (
+                            <span className="text-gray-600">-</span>
+                          )}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

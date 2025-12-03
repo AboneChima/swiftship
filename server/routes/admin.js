@@ -47,4 +47,31 @@ router.post('/send-email', authenticateToken, isAdmin, async (req, res) => {
   }
 })
 
+// Delete user
+router.delete('/users/:id', authenticateToken, isAdmin, async (req, res) => {
+  const userId = req.params.id
+
+  try {
+    // Prevent admin from deleting themselves
+    if (parseInt(userId) === req.user.id) {
+      return res.status(400).json({ message: 'Cannot delete your own account' })
+    }
+
+    // Check if user exists
+    const userResult = await query('SELECT id FROM users WHERE id = $1', [userId])
+    
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    // Delete user permanently
+    await query('DELETE FROM users WHERE id = $1', [userId])
+    
+    res.json({ message: 'User deleted successfully' })
+  } catch (err) {
+    console.error('Delete user error:', err)
+    res.status(500).json({ message: 'Server error' })
+  }
+})
+
 export default router
