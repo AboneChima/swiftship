@@ -5,14 +5,14 @@ dotenv.config()
 
 // Create transporter
 const createTransporter = () => {
-  // Use SendGrid for production (more reliable on hosting platforms)
-  if (process.env.SENDGRID_API_KEY) {
+  // Use Brevo for production (300 emails/day free)
+  if (process.env.BREVO_API_KEY) {
     return nodemailer.createTransport({
-      host: 'smtp.sendgrid.net',
+      host: 'smtp-relay.brevo.com',
       port: 587,
       auth: {
-        user: 'apikey',
-        pass: process.env.SENDGRID_API_KEY,
+        user: process.env.BREVO_USER,
+        pass: process.env.BREVO_API_KEY,
       },
     })
   }
@@ -27,7 +27,7 @@ const createTransporter = () => {
   }
   
   console.log('Using Gmail for email service')
-  return nodemailer.createTransport(config)
+  return nodemailer.createTransporter(config)
 }
 
 // Welcome email template
@@ -115,8 +115,8 @@ export const sendWelcomeEmail = async (userEmail, userName) => {
   try {
     const transporter = createTransporter()
     
-    const fromEmail = process.env.SENDGRID_API_KEY 
-      ? process.env.SENDGRID_FROM_EMAIL || 'noreply@swiftship.com'
+    const fromEmail = process.env.BREVO_API_KEY 
+      ? process.env.BREVO_FROM_EMAIL || 'noreply@swiftship.com'
       : process.env.SMTP_USER
     
     const mailOptions = {
@@ -140,8 +140,8 @@ export const sendCustomEmail = async (userEmail, userName, subject, message) => 
   try {
     const transporter = createTransporter()
     
-    const fromEmail = process.env.SENDGRID_API_KEY 
-      ? process.env.SENDGRID_FROM_EMAIL || 'noreply@swiftship.com'
+    const fromEmail = process.env.BREVO_API_KEY 
+      ? process.env.BREVO_FROM_EMAIL || 'noreply@swiftship.com'
       : process.env.SMTP_USER
     
     const mailOptions = {
