@@ -5,6 +5,19 @@ dotenv.config()
 
 // Create transporter
 const createTransporter = () => {
+  // Use SendGrid for production (more reliable on hosting platforms)
+  if (process.env.SENDGRID_API_KEY) {
+    return nodemailer.createTransport({
+      host: 'smtp.sendgrid.net',
+      port: 587,
+      auth: {
+        user: 'apikey',
+        pass: process.env.SENDGRID_API_KEY,
+      },
+    })
+  }
+  
+  // Fallback to Gmail for local development
   const config = {
     service: 'gmail',
     auth: {
@@ -13,7 +26,7 @@ const createTransporter = () => {
     },
   }
   
-  console.log('Email config:', { user: config.auth.user, passLength: config.auth.pass?.length })
+  console.log('Using Gmail for email service')
   return nodemailer.createTransport(config)
 }
 
@@ -102,8 +115,12 @@ export const sendWelcomeEmail = async (userEmail, userName) => {
   try {
     const transporter = createTransporter()
     
+    const fromEmail = process.env.SENDGRID_API_KEY 
+      ? process.env.SENDGRID_FROM_EMAIL || 'noreply@swiftship.com'
+      : process.env.SMTP_USER
+    
     const mailOptions = {
-      from: `"SwiftShip Express" <${process.env.SMTP_USER}>`,
+      from: `"SwiftShip Express" <${fromEmail}>`,
       to: userEmail,
       subject: 'Welcome to SwiftShip Express! 🚀',
       html: getWelcomeEmailTemplate(userName),
@@ -123,8 +140,12 @@ export const sendCustomEmail = async (userEmail, userName, subject, message) => 
   try {
     const transporter = createTransporter()
     
+    const fromEmail = process.env.SENDGRID_API_KEY 
+      ? process.env.SENDGRID_FROM_EMAIL || 'noreply@swiftship.com'
+      : process.env.SMTP_USER
+    
     const mailOptions = {
-      from: `"SwiftShip Express" <${process.env.SMTP_USER}>`,
+      from: `"SwiftShip Express" <${fromEmail}>`,
       to: userEmail,
       subject: subject,
       html: getCustomEmailTemplate(subject, message),
