@@ -179,8 +179,8 @@ export const sendWelcomeEmail = async (userEmail, userName) => {
   }
 }
 
-// Send custom email using Brevo API (fallback to SMTP)
-export const sendCustomEmail = async (userEmail, userName, subject, message) => {
+// Send custom email with optional attachment using Brevo API (fallback to SMTP)
+export const sendCustomEmail = async (userEmail, userName, subject, message, attachment = null) => {
   // Try Brevo API first (more reliable on hosting platforms)
   if (process.env.BREVO_API_KEY) {
     try {
@@ -193,6 +193,14 @@ export const sendCustomEmail = async (userEmail, userName, subject, message) => 
       sendSmtpEmail.to = [{ email: userEmail, name: userName }]
       sendSmtpEmail.subject = subject
       sendSmtpEmail.htmlContent = getCustomEmailTemplate(subject, message)
+      
+      // Add attachment if provided
+      if (attachment) {
+        sendSmtpEmail.attachment = [{
+          content: attachment.content,
+          name: attachment.filename
+        }]
+      }
       
       const result = await apiInstance.sendTransacEmail(sendSmtpEmail)
       console.log('Custom email sent via API:', result.messageId)

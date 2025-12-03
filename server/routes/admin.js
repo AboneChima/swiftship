@@ -1,9 +1,27 @@
 import express from 'express'
+import multer from 'multer'
 import { query } from '../db.js'
 import { authenticateToken, isAdmin } from '../middleware/auth.js'
 import { sendCustomEmail } from '../services/emailService.js'
 
 const router = express.Router()
+
+// Configure multer for file uploads (memory storage)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    // Allow images and PDFs
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf']
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true)
+    } else {
+      cb(new Error('Invalid file type. Only images and PDFs are allowed.'))
+    }
+  }
+})
 
 router.get('/users', authenticateToken, isAdmin, async (req, res) => {
   try {
@@ -15,8 +33,8 @@ router.get('/users', authenticateToken, isAdmin, async (req, res) => {
   }
 })
 
-// Send email to user
-router.post('/send-email', authenticateToken, isAdmin, async (req, res) => {
+// Send email to user with optional attachment
+router.post('/send-email', authenticateToken, isAdmin, upload.single('attachment'), async (req, res) => {
   const { userId, subject, message } = req.body
 
   if (!userId || !subject || !message) {
@@ -33,8 +51,17 @@ router.post('/send-email', authenticateToken, isAdmin, async (req, res) => {
 
     const user = userResult.rows[0]
     
+    // Prepare attachment if file was uploaded
+    let attachment = null
+    if (req.file) {
+      attachment = {
+        content: req.file.buffer.toString('base64'),
+        filename: req.file.originalname
+      }
+    }
+    
     // Send email
-    const result = await sendCustomEmail(user.email, user.name, subject, message)
+    const result = await sendCustomEmail(user.email, user.name, subject, message, attachment)
     
     if (result.success) {
       res.json({ message: 'Email sent successfully', messageId: result.messageId })
