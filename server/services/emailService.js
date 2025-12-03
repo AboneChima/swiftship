@@ -7,11 +7,13 @@ dotenv.config()
 const createTransporter = () => {
   // Use Brevo for production (300 emails/day free)
   if (process.env.BREVO_API_KEY) {
+    console.log('Using Brevo SMTP for email service')
     return nodemailer.createTransport({
       host: 'smtp-relay.brevo.com',
       port: 587,
+      secure: false,
       auth: {
-        user: process.env.BREVO_USER,
+        user: process.env.BREVO_LOGIN,
         pass: process.env.BREVO_API_KEY,
       },
     })
