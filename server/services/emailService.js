@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import * as brevo from '@getbrevo/brevo'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -114,8 +115,30 @@ const getCustomEmailTemplate = (subject, message) => {
   `
 }
 
-// Send welcome email
+// Send welcome email using Brevo API (fallback to SMTP)
 export const sendWelcomeEmail = async (userEmail, userName) => {
+  // Try Brevo API first (more reliable on hosting platforms)
+  if (process.env.BREVO_API_KEY && process.env.BREVO_API_KEY.startsWith('xkeysib-')) {
+    try {
+      console.log('Using Brevo API for email')
+      const apiInstance = new brevo.TransactionalEmailsApi()
+      apiInstance.setApiKey(brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY)
+      
+      const sendSmtpEmail = new brevo.SendSmtpEmail()
+      sendSmtpEmail.sender = { name: 'SwiftShip Express', email: process.env.BREVO_FROM_EMAIL }
+      sendSmtpEmail.to = [{ email: userEmail, name: userName }]
+      sendSmtpEmail.subject = 'Welcome to SwiftShip Express! 🚀'
+      sendSmtpEmail.htmlContent = getWelcomeEmailTemplate(userName)
+      
+      const result = await apiInstance.sendTransacEmail(sendSmtpEmail)
+      console.log('Welcome email sent via API:', result.messageId)
+      return { success: true, messageId: result.messageId }
+    } catch (error) {
+      console.error('Brevo API error, falling back to SMTP:', error.message)
+    }
+  }
+  
+  // Fallback to SMTP
   try {
     const transporter = createTransporter()
     
@@ -131,7 +154,7 @@ export const sendWelcomeEmail = async (userEmail, userName) => {
     }
 
     const info = await transporter.sendMail(mailOptions)
-    console.log('Welcome email sent:', info.messageId)
+    console.log('Welcome email sent via SMTP:', info.messageId)
     return { success: true, messageId: info.messageId }
   } catch (error) {
     console.error('Error sending welcome email:', error)
@@ -139,8 +162,30 @@ export const sendWelcomeEmail = async (userEmail, userName) => {
   }
 }
 
-// Send custom email
+// Send custom email using Brevo API (fallback to SMTP)
 export const sendCustomEmail = async (userEmail, userName, subject, message) => {
+  // Try Brevo API first (more reliable on hosting platforms)
+  if (process.env.BREVO_API_KEY && process.env.BREVO_API_KEY.startsWith('xkeysib-')) {
+    try {
+      console.log('Using Brevo API for email')
+      const apiInstance = new brevo.TransactionalEmailsApi()
+      apiInstance.setApiKey(brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY)
+      
+      const sendSmtpEmail = new brevo.SendSmtpEmail()
+      sendSmtpEmail.sender = { name: 'SwiftShip Express', email: process.env.BREVO_FROM_EMAIL }
+      sendSmtpEmail.to = [{ email: userEmail, name: userName }]
+      sendSmtpEmail.subject = subject
+      sendSmtpEmail.htmlContent = getCustomEmailTemplate(subject, message)
+      
+      const result = await apiInstance.sendTransacEmail(sendSmtpEmail)
+      console.log('Custom email sent via API:', result.messageId)
+      return { success: true, messageId: result.messageId }
+    } catch (error) {
+      console.error('Brevo API error, falling back to SMTP:', error.message)
+    }
+  }
+  
+  // Fallback to SMTP
   try {
     const transporter = createTransporter()
     
@@ -156,7 +201,7 @@ export const sendCustomEmail = async (userEmail, userName, subject, message) => 
     }
 
     const info = await transporter.sendMail(mailOptions)
-    console.log('Custom email sent:', info.messageId)
+    console.log('Custom email sent via SMTP:', info.messageId)
     return { success: true, messageId: info.messageId }
   } catch (error) {
     console.error('Error sending custom email:', error)
