@@ -87,27 +87,44 @@ const getCustomEmailTemplate = (subject, message) => {
     <!DOCTYPE html>
     <html>
     <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
-        .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; }
+        .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #e5e7eb; }
+        .message { background: white; padding: 20px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #3b82f6; }
+        .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; padding: 20px; }
+        .badge { display: inline-block; background: #3b82f6; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; margin-bottom: 15px; }
       </style>
     </head>
     <body>
       <div class="container">
         <div class="header">
-          <h1>✈ SwiftShip Express</h1>
+          <h1 style="margin: 0;">✈ SwiftShip Express</h1>
+          <p style="margin: 5px 0 0 0; opacity: 0.9;">Important Notification</p>
         </div>
         <div class="content">
-          <h2>${subject}</h2>
-          <div style="white-space: pre-wrap;">${message}</div>
+          <div class="badge">📧 Message from SwiftShip Team</div>
+          <h2 style="color: #1e40af; margin-top: 0;">${subject}</h2>
+          <div class="message">
+            <div style="white-space: pre-wrap; color: #374151;">${message}</div>
+          </div>
+          <p style="margin-top: 20px; color: #6b7280; font-size: 14px;">
+            This is an official notification from SwiftShip Express regarding your account or shipment.
+          </p>
         </div>
         <div class="footer">
-          <p>SwiftShip Express - Global Logistics Solutions</p>
-          <p>87 George Street DURHAM DH6 6YK</p>
-          <p>info@swiftshipexpress.com | www.swiftshipexpress.com</p>
+          <p style="margin: 5px 0;"><strong>SwiftShip Express</strong> - Global Logistics Solutions</p>
+          <p style="margin: 5px 0;">87 George Street DURHAM DH6 6YK</p>
+          <p style="margin: 5px 0;">
+            <a href="mailto:info@swiftshipexpress.com" style="color: #3b82f6; text-decoration: none;">info@swiftshipexpress.com</a> | 
+            <a href="http://www.swiftshipexpress.com" style="color: #3b82f6; text-decoration: none;">www.swiftshipexpress.com</a>
+          </p>
+          <p style="margin: 15px 0 5px 0; font-size: 12px; color: #9ca3af;">
+            You received this email because you have an account with SwiftShip Express.
+          </p>
         </div>
       </div>
     </body>
