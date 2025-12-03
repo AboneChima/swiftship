@@ -11,7 +11,10 @@ const isProduction = process.env.NODE_ENV === 'production'
 router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body
 
+  console.log('Signup attempt:', { name, email, hasPassword: !!password })
+
   if (!name || !email || !password) {
+    console.log('Missing fields')
     return res.status(400).json({ message: 'All fields required' })
   }
 
@@ -19,6 +22,7 @@ router.post('/signup', async (req, res) => {
     // Check if user exists
     const existingUserResult = await query('SELECT * FROM users WHERE email = $1', [email])
     if (existingUserResult.rows.length > 0) {
+      console.log('Email already exists:', email)
       return res.status(400).json({ message: 'Email already registered' })
     }
 
@@ -37,8 +41,12 @@ router.post('/signup', async (req, res) => {
     const userResult = await query('SELECT id, name, email, role FROM users WHERE id = $1', [userId])
     const user = userResult.rows[0]
 
+    console.log('User created successfully:', userId, 'Sending welcome email...')
+
     // Send welcome email (don't wait for it to complete)
-    sendWelcomeEmail(email, name).catch(err => {
+    sendWelcomeEmail(email, name).then(result => {
+      console.log('Welcome email result:', result)
+    }).catch(err => {
       console.error('Failed to send welcome email:', err)
     })
 
