@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import axios from '../config/axios'
 import { useReactToPrint } from 'react-to-print'
-import { FiPackage, FiUsers, FiPlus, FiEdit2, FiTrash2, FiPrinter, FiX, FiSave, FiCheckCircle, FiTruck, FiClock, FiBox } from 'react-icons/fi'
+import { FiPackage, FiUsers, FiPlus, FiEdit2, FiTrash2, FiPrinter, FiX, FiSave, FiCheckCircle, FiTruck, FiClock, FiBox, FiMail } from 'react-icons/fi'
+import EmailNotification from '../components/EmailNotification'
 
 function Receipt({ packageData }) {
   const currentDate = new Date()
@@ -681,6 +682,15 @@ export default function Admin() {
               <FiUsers />
               <span className="hidden xs:inline">Users</span>
             </button>
+            <button
+              onClick={() => setActiveTab('email')}
+              className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base ${
+                activeTab === 'email' ? 'bg-accent-primary text-white' : 'bg-dark-card text-gray-400 border border-dark-border hover:text-white'
+              }`}
+            >
+              <FiMail />
+              <span className="hidden xs:inline">Email</span>
+            </button>
           </div>
           
           {activeTab === 'packages' && (
@@ -940,6 +950,10 @@ export default function Admin() {
               </div>
             </div>
           </>
+        )}
+
+        {activeTab === 'email' && (
+          <EmailNotification users={users} />
         )}
       </div>
 

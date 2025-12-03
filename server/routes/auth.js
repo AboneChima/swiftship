@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import db, { query } from '../db.js'
 import { authenticateToken } from '../middleware/auth.js'
+import { sendWelcomeEmail } from '../services/emailService.js'
 
 const router = express.Router()
 const isProduction = process.env.NODE_ENV === 'production'
@@ -35,6 +36,11 @@ router.post('/signup', async (req, res) => {
     // Get user without password
     const userResult = await query('SELECT id, name, email, role FROM users WHERE id = $1', [userId])
     const user = userResult.rows[0]
+
+    // Send welcome email (don't wait for it to complete)
+    sendWelcomeEmail(email, name).catch(err => {
+      console.error('Failed to send welcome email:', err)
+    })
 
     res.json({ token, user })
   } catch (err) {
