@@ -5,13 +5,16 @@ dotenv.config()
 
 // Create transporter
 const createTransporter = () => {
-  return nodemailer.createTransport({
+  const config = {
     service: 'gmail',
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
-  })
+  }
+  
+  console.log('Email config:', { user: config.auth.user, passLength: config.auth.pass?.length })
+  return nodemailer.createTransport(config)
 }
 
 // Welcome email template
