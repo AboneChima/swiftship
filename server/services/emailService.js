@@ -10,12 +10,14 @@ const createTransporter = () => {
     console.log('Using Brevo SMTP for email service')
     return nodemailer.createTransport({
       host: 'smtp-relay.brevo.com',
-      port: 587,
-      secure: false,
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.BREVO_LOGIN,
         pass: process.env.BREVO_API_KEY,
       },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
     })
   }
   
