@@ -118,7 +118,7 @@ const getCustomEmailTemplate = (subject, message) => {
 // Send welcome email using Brevo API (fallback to SMTP)
 export const sendWelcomeEmail = async (userEmail, userName) => {
   // Try Brevo API first (more reliable on hosting platforms)
-  if (process.env.BREVO_API_KEY && process.env.BREVO_API_KEY.startsWith('xkeysib-')) {
+  if (process.env.BREVO_API_KEY) {
     try {
       console.log('Using Brevo API for email')
       const apiInstance = new brevo.TransactionalEmailsApi()
@@ -165,7 +165,7 @@ export const sendWelcomeEmail = async (userEmail, userName) => {
 // Send custom email using Brevo API (fallback to SMTP)
 export const sendCustomEmail = async (userEmail, userName, subject, message) => {
   // Try Brevo API first (more reliable on hosting platforms)
-  if (process.env.BREVO_API_KEY && process.env.BREVO_API_KEY.startsWith('xkeysib-')) {
+  if (process.env.BREVO_API_KEY) {
     try {
       console.log('Using Brevo API for email')
       const apiInstance = new brevo.TransactionalEmailsApi()
