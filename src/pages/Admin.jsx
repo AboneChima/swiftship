@@ -3,6 +3,7 @@ import axios from '../config/axios'
 import { useReactToPrint } from 'react-to-print'
 import { FiPackage, FiUsers, FiPlus, FiEdit2, FiTrash2, FiPrinter, FiX, FiSave, FiCheckCircle, FiTruck, FiClock, FiBox, FiMail } from 'react-icons/fi'
 import EmailNotification from '../components/EmailNotification'
+import PackageForm from '../components/PackageForm'
 
 function Receipt({ packageData }) {
   const currentDate = new Date()
@@ -498,10 +499,24 @@ export default function Admin() {
   const [formData, setFormData] = useState({
     tracking_number: '',
     sender_name: '',
+    sender_phone: '',
+    sender_id: '',
+    sender_email: '',
+    sender_country: '',
     sender_location: '',
     receiver_name: '',
+    receiver_phone: '',
+    receiver_email: '',
+    receiver_country: '',
     receiver_location: '',
+    product_name: '',
     weight: '',
+    shipping_cost: '',
+    clearance_cost: '',
+    collection_date: '',
+    collection_time: '',
+    delivery_date: '',
+    arrival_date: '',
     status: 'pending'
   })
   const [printPackage, setPrintPackage] = useState(null)
@@ -580,10 +595,24 @@ export default function Admin() {
     setFormData({
       tracking_number: pkg.tracking_number,
       sender_name: pkg.sender_name,
+      sender_phone: pkg.sender_phone || '',
+      sender_id: pkg.sender_id || '',
+      sender_email: pkg.sender_email || '',
+      sender_country: pkg.sender_country || '',
       sender_location: pkg.sender_location,
       receiver_name: pkg.receiver_name,
+      receiver_phone: pkg.receiver_phone || '',
+      receiver_email: pkg.receiver_email || '',
+      receiver_country: pkg.receiver_country || '',
       receiver_location: pkg.receiver_location,
+      product_name: pkg.product_name || '',
       weight: pkg.weight,
+      shipping_cost: pkg.shipping_cost || '',
+      clearance_cost: pkg.clearance_cost || '',
+      collection_date: pkg.collection_date || '',
+      collection_time: pkg.collection_time || '',
+      delivery_date: pkg.delivery_date || '',
+      arrival_date: pkg.arrival_date || '',
       status: pkg.status
     })
     setShowForm(true)
@@ -614,10 +643,24 @@ export default function Admin() {
     setFormData({
       tracking_number: '',
       sender_name: '',
+      sender_phone: '',
+      sender_id: '',
+      sender_email: '',
+      sender_country: '',
       sender_location: '',
       receiver_name: '',
+      receiver_phone: '',
+      receiver_email: '',
+      receiver_country: '',
       receiver_location: '',
+      product_name: '',
       weight: '',
+      shipping_cost: '',
+      clearance_cost: '',
+      collection_date: '',
+      collection_time: '',
+      delivery_date: '',
+      arrival_date: '',
       status: 'pending'
     })
     setEditingPackage(null)
@@ -721,92 +764,15 @@ export default function Admin() {
 
             {showForm && (
               <div className="bg-dark-card border border-dark-border rounded-xl p-4 sm:p-6 lg:p-8 mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
-                  {editingPackage ? 'Edit Package' : 'Add New Package'}
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-6">
+                  {editingPackage ? 'Edit Package' : 'Register New Package'}
                 </h2>
-                <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-300 mb-2">Tracking Number</label>
-                      <input
-                        type="text"
-                        value={formData.tracking_number}
-                        onChange={(e) => setFormData({ ...formData, tracking_number: e.target.value })}
-                        className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white focus:border-accent-primary focus:outline-none"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-300 mb-2">Weight (kg)</label>
-                      <input
-                        type="number"
-                        step="0.01"
-                        value={formData.weight}
-                        onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-                        className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white focus:border-accent-primary focus:outline-none"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-300 mb-2">Sender Name</label>
-                      <input
-                        type="text"
-                        value={formData.sender_name}
-                        onChange={(e) => setFormData({ ...formData, sender_name: e.target.value })}
-                        className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white focus:border-accent-primary focus:outline-none"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-300 mb-2">Sender Location</label>
-                      <input
-                        type="text"
-                        value={formData.sender_location}
-                        onChange={(e) => setFormData({ ...formData, sender_location: e.target.value })}
-                        className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white focus:border-accent-primary focus:outline-none"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-300 mb-2">Receiver Name</label>
-                      <input
-                        type="text"
-                        value={formData.receiver_name}
-                        onChange={(e) => setFormData({ ...formData, receiver_name: e.target.value })}
-                        className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white focus:border-accent-primary focus:outline-none"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-300 mb-2">Receiver Location</label>
-                      <input
-                        type="text"
-                        value={formData.receiver_location}
-                        onChange={(e) => setFormData({ ...formData, receiver_location: e.target.value })}
-                        className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white focus:border-accent-primary focus:outline-none"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-300 mb-2">Status</label>
-                      <select
-                        value={formData.status}
-                        onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                        className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white focus:border-accent-primary focus:outline-none"
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="picked_up">Picked Up</option>
-                        <option value="in_transit">In Transit</option>
-                        <option value="out_for_delivery">Out for Delivery</option>
-                        <option value="delivered">Delivered</option>
-                      </select>
-                    </div>
-                  </div>
-                  <button type="submit" className="bg-accent-primary hover:bg-blue-600 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 w-full sm:w-auto text-sm sm:text-base">
-                    <FiSave />
-                    {editingPackage ? 'Update' : 'Create'} Package
-                  </button>
-                </form>
+                <PackageForm 
+                  formData={formData}
+                  setFormData={setFormData}
+                  onSubmit={handleSubmit}
+                  editingPackage={editingPackage}
+                />
               </div>
             )}
 
