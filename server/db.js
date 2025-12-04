@@ -42,17 +42,17 @@ export async function initDatabase() {
           id SERIAL PRIMARY KEY,
           tracking_number TEXT UNIQUE NOT NULL,
           sender_name TEXT NOT NULL,
-          sender_phone TEXT NOT NULL,
-          sender_id TEXT NOT NULL,
-          sender_email TEXT NOT NULL,
-          sender_country TEXT NOT NULL,
+          sender_phone TEXT DEFAULT '',
+          sender_id TEXT DEFAULT '',
+          sender_email TEXT DEFAULT '',
+          sender_country TEXT DEFAULT '',
           sender_location TEXT NOT NULL,
           receiver_name TEXT NOT NULL,
-          receiver_phone TEXT NOT NULL,
-          receiver_email TEXT NOT NULL,
-          receiver_country TEXT NOT NULL,
+          receiver_phone TEXT DEFAULT '',
+          receiver_email TEXT DEFAULT '',
+          receiver_country TEXT DEFAULT '',
           receiver_location TEXT NOT NULL,
-          product_name TEXT NOT NULL,
+          product_name TEXT DEFAULT 'Package',
           weight REAL NOT NULL,
           shipping_cost REAL DEFAULT 0,
           clearance_cost REAL DEFAULT 0,
@@ -64,6 +64,37 @@ export async function initDatabase() {
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
       `)
+
+      // Run migration to add new columns to existing tables
+      console.log('Running database migrations...')
+      const migrations = [
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS sender_phone TEXT DEFAULT ''`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS sender_id TEXT DEFAULT ''`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS sender_email TEXT DEFAULT ''`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS sender_country TEXT DEFAULT ''`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS receiver_phone TEXT DEFAULT ''`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS receiver_email TEXT DEFAULT ''`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS receiver_country TEXT DEFAULT ''`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS product_name TEXT DEFAULT 'Package'`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS shipping_cost REAL DEFAULT 0`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS clearance_cost REAL DEFAULT 0`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS collection_date DATE`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS collection_time TEXT`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS delivery_date DATE`,
+        `ALTER TABLE packages ADD COLUMN IF NOT EXISTS arrival_date DATE`,
+      ]
+
+      for (const migration of migrations) {
+        try {
+          await db.query(migration)
+        } catch (err) {
+          // Ignore errors if column already exists
+          if (!err.message.includes('already exists')) {
+            console.error('Migration error:', err.message)
+          }
+        }
+      }
+      console.log('Database migrations completed')
 
       await db.query(`
         CREATE TABLE IF NOT EXISTS tracking_history (
