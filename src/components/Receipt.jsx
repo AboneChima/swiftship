@@ -70,24 +70,24 @@ export default function Receipt({ packageData }) {
           </div>
         </div>
 
-        {/* Tracking Number - Large */}
+        {/* Tracking Number - Extra Large */}
         <div style={{ 
           textAlign: 'center',
           backgroundColor: '#dbeafe',
-          padding: '20px',
+          padding: '25px',
           borderRadius: '12px',
           marginBottom: '25px',
-          border: '3px solid #3b82f6'
+          border: '4px solid #3b82f6'
         }}>
-          <div style={{ fontSize: '16px', color: '#6b7280', marginBottom: '8px', fontWeight: 'bold' }}>
+          <div style={{ fontSize: '20px', color: '#6b7280', marginBottom: '10px', fontWeight: 'bold' }}>
             TRACKING NUMBER
           </div>
           <div style={{ 
-            fontSize: '32px',
+            fontSize: '40px',
             fontWeight: 'bold',
             color: '#1e40af',
             fontFamily: 'monospace',
-            letterSpacing: '3px'
+            letterSpacing: '4px'
           }}>
             {packageData.tracking_number}
           </div>
@@ -106,13 +106,13 @@ export default function Receipt({ packageData }) {
             borderRadius: '10px',
             border: '2px solid #22c55e'
           }}>
-            <div style={{ fontSize: '14px', color: '#6b7280', fontWeight: 'bold', marginBottom: '8px' }}>
+            <div style={{ fontSize: '16px', color: '#6b7280', fontWeight: 'bold', marginBottom: '10px' }}>
               PRODUCT
             </div>
-            <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#000' }}>
+            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#000' }}>
               {packageData.product_name || 'Package'}
             </div>
-            <div style={{ fontSize: '16px', color: '#6b7280', marginTop: '5px' }}>
+            <div style={{ fontSize: '18px', color: '#6b7280', marginTop: '8px' }}>
               Weight: {packageData.weight} kg
             </div>
           </div>
@@ -122,10 +122,10 @@ export default function Receipt({ packageData }) {
             borderRadius: '10px',
             border: '2px solid #eab308'
           }}>
-            <div style={{ fontSize: '14px', color: '#6b7280', fontWeight: 'bold', marginBottom: '8px' }}>
+            <div style={{ fontSize: '16px', color: '#6b7280', fontWeight: 'bold', marginBottom: '10px' }}>
               DATES
             </div>
-            <div style={{ fontSize: '15px', lineHeight: '1.8' }}>
+            <div style={{ fontSize: '17px', lineHeight: '2' }}>
               <div><strong>Collection:</strong> {formatDate(packageData.collection_date)} {packageData.collection_time || ''}</div>
               <div><strong>Delivery:</strong> {formatDate(packageData.delivery_date)}</div>
               <div><strong>Arrival:</strong> {formatDate(packageData.arrival_date)}</div>
@@ -148,17 +148,17 @@ export default function Receipt({ packageData }) {
             border: '3px solid #fbbf24'
           }}>
             <h3 style={{ 
-              fontSize: '16px', 
+              fontSize: '18px', 
               fontWeight: 'bold',
-              marginBottom: '12px',
+              marginBottom: '14px',
               color: '#000',
               textTransform: 'uppercase',
-              letterSpacing: '1px'
+              letterSpacing: '1.5px'
             }}>FROM (SENDER)</h3>
-            <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', color: '#000' }}>
+            <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '12px', color: '#000' }}>
               {packageData.sender_name}
             </div>
-            <div style={{ fontSize: '15px', color: '#4b5563', lineHeight: '1.8' }}>
+            <div style={{ fontSize: '17px', color: '#4b5563', lineHeight: '2' }}>
               <div><strong>Phone:</strong> {packageData.sender_phone || 'N/A'}</div>
               <div><strong>Email:</strong> {packageData.sender_email || 'N/A'}</div>
               <div><strong>ID:</strong> {packageData.sender_id || 'N/A'}</div>
@@ -175,17 +175,17 @@ export default function Receipt({ packageData }) {
             border: '3px solid #3b82f6'
           }}>
             <h3 style={{ 
-              fontSize: '16px', 
+              fontSize: '18px', 
               fontWeight: 'bold',
-              marginBottom: '12px',
+              marginBottom: '14px',
               color: '#000',
               textTransform: 'uppercase',
-              letterSpacing: '1px'
+              letterSpacing: '1.5px'
             }}>TO (CONSIGNEE)</h3>
-            <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', color: '#000' }}>
+            <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '12px', color: '#000' }}>
               {packageData.receiver_name}
             </div>
-            <div style={{ fontSize: '15px', color: '#4b5563', lineHeight: '1.8' }}>
+            <div style={{ fontSize: '17px', color: '#4b5563', lineHeight: '2' }}>
               <div><strong>Phone:</strong> {packageData.receiver_phone || 'N/A'}</div>
               <div><strong>Email:</strong> {packageData.receiver_email || 'N/A'}</div>
               <div><strong>Country:</strong> {packageData.receiver_country || 'N/A'}</div>
@@ -194,50 +194,50 @@ export default function Receipt({ packageData }) {
           </div>
         </div>
 
-        {/* Costs Table - Larger Text */}
+        {/* Costs Table - Extra Large Text */}
         <table style={{ 
           width: '100%', 
           borderCollapse: 'collapse',
           marginBottom: '25px',
-          fontSize: '16px'
+          fontSize: '18px'
         }}>
           <thead>
             <tr style={{ 
               background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
               color: '#fff'
             }}>
-              <th style={{ padding: '15px', textAlign: 'left', border: '2px solid #2563eb', fontSize: '17px' }}>Description</th>
-              <th style={{ padding: '15px', textAlign: 'left', border: '2px solid #2563eb', fontSize: '17px' }}>Status</th>
-              <th style={{ padding: '15px', textAlign: 'right', border: '2px solid #2563eb', fontSize: '17px' }}>Amount</th>
+              <th style={{ padding: '18px', textAlign: 'left', border: '2px solid #2563eb', fontSize: '20px' }}>Description</th>
+              <th style={{ padding: '18px', textAlign: 'left', border: '2px solid #2563eb', fontSize: '20px' }}>Status</th>
+              <th style={{ padding: '18px', textAlign: 'right', border: '2px solid #2563eb', fontSize: '20px' }}>Amount</th>
             </tr>
           </thead>
           <tbody>
             <tr style={{ backgroundColor: '#f8fafc' }}>
-              <td style={{ padding: '15px', border: '2px solid #d1d5db', fontSize: '16px' }}>Shipping Cost</td>
-              <td style={{ padding: '15px', border: '2px solid #d1d5db' }}>
+              <td style={{ padding: '18px', border: '2px solid #d1d5db', fontSize: '19px' }}>Shipping Cost</td>
+              <td style={{ padding: '18px', border: '2px solid #d1d5db' }}>
                 <span style={{ 
                   border: '2px solid #000', 
-                  padding: '6px 12px',
+                  padding: '8px 14px',
                   display: 'inline-block',
                   fontWeight: 'bold',
-                  fontSize: '15px'
+                  fontSize: '17px'
                 }}>{packageData.status?.toUpperCase()}</span>
               </td>
-              <td style={{ padding: '15px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '18px' }}>
+              <td style={{ padding: '18px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '22px' }}>
                 $ {parseFloat(packageData.shipping_cost || 0).toFixed(2)}
               </td>
             </tr>
             <tr style={{ backgroundColor: '#fff' }}>
-              <td style={{ padding: '15px', border: '2px solid #d1d5db', fontSize: '16px' }}>Clearance Cost</td>
-              <td style={{ padding: '15px', border: '2px solid #d1d5db' }}></td>
-              <td style={{ padding: '15px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '18px' }}>
+              <td style={{ padding: '18px', border: '2px solid #d1d5db', fontSize: '19px' }}>Clearance Cost</td>
+              <td style={{ padding: '18px', border: '2px solid #d1d5db' }}></td>
+              <td style={{ padding: '18px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '22px' }}>
                 $ {parseFloat(packageData.clearance_cost || 0).toFixed(2)}
               </td>
             </tr>
             <tr style={{ backgroundColor: '#dbeafe' }}>
-              <td style={{ padding: '15px', border: '2px solid #d1d5db', fontSize: '18px', fontWeight: 'bold' }}>TOTAL</td>
-              <td style={{ padding: '15px', border: '2px solid #d1d5db' }}></td>
-              <td style={{ padding: '15px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '22px', color: '#1e40af' }}>
+              <td style={{ padding: '18px', border: '2px solid #d1d5db', fontSize: '22px', fontWeight: 'bold' }}>TOTAL</td>
+              <td style={{ padding: '18px', border: '2px solid #d1d5db' }}></td>
+              <td style={{ padding: '18px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '28px', color: '#1e40af' }}>
                 $ {totalCost.toFixed(2)}
               </td>
             </tr>
@@ -278,11 +278,11 @@ export default function Receipt({ packageData }) {
           padding: '15px',
           backgroundColor: '#f8fafc',
           borderRadius: '8px',
-          fontSize: '14px',
+          fontSize: '16px',
           color: '#6b7280'
         }}>
           <strong>SwiftShip Express</strong> | 87 George Street DURHAM DH6 6YK<br/>
-          info@swiftshipexpress.com | www.swiftshipexpress.com
+          info@swiftshipexpress.com | www.swiftshipexpress.live
         </div>
       </div>
     </div>

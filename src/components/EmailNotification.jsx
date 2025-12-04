@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { FiMail, FiSend, FiX, FiPaperclip, FiFile } from 'react-icons/fi'
 import axios from '../config/axios'
 
-export default function EmailNotification({ users }) {
-  const [selectedUser, setSelectedUser] = useState('')
+export default function EmailNotification() {
+  const [recipientEmail, setRecipientEmail] = useState('')
+  const [recipientName, setRecipientName] = useState('')
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
   const [attachment, setAttachment] = useState(null)
@@ -37,8 +38,8 @@ export default function EmailNotification({ users }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    if (!selectedUser || !subject || !message) {
-      setError('User, subject, and message are required')
+    if (!recipientEmail || !recipientName || !subject || !message) {
+      setError('All fields are required')
       return
     }
 
@@ -48,7 +49,8 @@ export default function EmailNotification({ users }) {
 
     try {
       const formData = new FormData()
-      formData.append('userId', selectedUser)
+      formData.append('recipientEmail', recipientEmail)
+      formData.append('recipientName', recipientName)
       formData.append('subject', subject)
       formData.append('message', message)
       if (attachment) {
@@ -64,7 +66,8 @@ export default function EmailNotification({ users }) {
       setSuccess(true)
       setSubject('')
       setMessage('')
-      setSelectedUser('')
+      setRecipientEmail('')
+      setRecipientName('')
       setAttachment(null)
       
       setTimeout(() => setSuccess(false), 5000)
@@ -74,8 +77,6 @@ export default function EmailNotification({ users }) {
       setLoading(false)
     }
   }
-
-  const selectedUserData = users.find(u => u.id === parseInt(selectedUser))
 
   return (
     <div className="bg-dark-card border border-dark-border rounded-xl p-4 sm:p-6 lg:p-8">
@@ -109,29 +110,34 @@ export default function EmailNotification({ users }) {
 
       <form onSubmit={handleSubmit}>
         <div className="space-y-4 sm:space-y-6">
-          {/* User Selection */}
+          {/* Recipient Name */}
           <div>
             <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Select User <span className="text-red-400">*</span>
+              Recipient Name <span className="text-red-400">*</span>
             </label>
-            <select
-              value={selectedUser}
-              onChange={(e) => setSelectedUser(e.target.value)}
-              className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white focus:border-accent-primary focus:outline-none"
+            <input
+              type="text"
+              value={recipientName}
+              onChange={(e) => setRecipientName(e.target.value)}
+              placeholder="Enter recipient's name"
+              className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white placeholder-gray-500 focus:border-accent-primary focus:outline-none"
               required
-            >
-              <option value="">Choose a user...</option>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name} ({user.email})
-                </option>
-              ))}
-            </select>
-            {selectedUserData && (
-              <p className="mt-2 text-sm text-gray-400">
-                Email will be sent to: <span className="text-accent-primary">{selectedUserData.email}</span>
-              </p>
-            )}
+            />
+          </div>
+
+          {/* Recipient Email */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
+              Recipient Email <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="email"
+              value={recipientEmail}
+              onChange={(e) => setRecipientEmail(e.target.value)}
+              placeholder="Enter recipient's email address"
+              className="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white placeholder-gray-500 focus:border-accent-primary focus:outline-none"
+              required
+            />
           </div>
 
           {/* Subject */}

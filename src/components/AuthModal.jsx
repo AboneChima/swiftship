@@ -41,20 +41,6 @@ export default function AuthModal({ mode, onClose, onSwitchMode }) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-                <FiUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full pl-12 pr-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-white focus:border-accent-primary focus:outline-none transition"
-                  placeholder="Your name"
-                  required
-                />
-              </div>
-            </div>
-          )}
-
-          <div>
             <label className="block text-sm font-semibold text-gray-300 mb-2">Email</label>
             <div className="relative">
               <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />

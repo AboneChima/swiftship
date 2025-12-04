@@ -33,24 +33,15 @@ router.get('/users', authenticateToken, isAdmin, async (req, res) => {
   }
 })
 
-// Send email to user with optional attachment
+// Send email with optional attachment
 router.post('/send-email', authenticateToken, isAdmin, upload.single('attachment'), async (req, res) => {
-  const { userId, subject, message } = req.body
+  const { recipientEmail, recipientName, subject, message } = req.body
 
-  if (!userId || !subject || !message) {
-    return res.status(400).json({ message: 'User, subject, and message are required' })
+  if (!recipientEmail || !recipientName || !subject || !message) {
+    return res.status(400).json({ message: 'Recipient email, name, subject, and message are required' })
   }
 
   try {
-    // Get user details
-    const userResult = await query('SELECT name, email FROM users WHERE id = $1', [userId])
-    
-    if (userResult.rows.length === 0) {
-      return res.status(404).json({ message: 'User not found' })
-    }
-
-    const user = userResult.rows[0]
-    
     // Prepare attachment if file was uploaded
     let attachment = null
     if (req.file) {
@@ -61,7 +52,7 @@ router.post('/send-email', authenticateToken, isAdmin, upload.single('attachment
     }
     
     // Send email
-    const result = await sendCustomEmail(user.email, user.name, subject, message, attachment)
+    const result = await sendCustomEmail(recipientEmail, recipientName, subject, message, attachment)
     
     if (result.success) {
       res.json({ message: 'Email sent successfully', messageId: result.messageId })

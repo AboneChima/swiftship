@@ -955,7 +955,7 @@ export default function Admin() {
         )}
 
         {activeTab === 'email' && (
-          <EmailNotification users={users} />
+          <EmailNotification />
         )}
       </div>
 
