@@ -132,7 +132,126 @@ const getCustomEmailTemplate = (subject, message) => {
   `
 }
 
-// Send welcome email using Brevo API (fallback to SMTP)
+// Package registration email template
+const getPackageRegistrationTemplate = (packageData) => {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
+        .tracking-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 2px solid #3b82f6; text-align: center; }
+        .tracking-number { font-size: 24px; font-weight: bold; color: #1e40af; font-family: monospace; letter-spacing: 2px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .info-item { background: white; padding: 15px; border-radius: 8px; }
+        .info-label { font-size: 12px; color: #6b7280; font-weight: bold; margin-bottom: 5px; }
+        .info-value { font-size: 14px; color: #1f2937; }
+        .button { display: inline-block; background: #3b82f6; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>✈ Package Registered Successfully!</h1>
+        </div>
+        <div class="content">
+          <h2>Hello ${packageData.receiver_name}!</h2>
+          <p>Your package has been registered with SwiftShip Express. You can now track your shipment using the tracking number below.</p>
+          
+          <div class="tracking-box">
+            <div style="font-size: 14px; color: #6b7280; margin-bottom: 10px;">TRACKING NUMBER</div>
+            <div class="tracking-number">${packageData.tracking_number}</div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">FROM</div>
+              <div class="info-value">${packageData.sender_name}</div>
+              <div class="info-value" style="font-size: 12px; color: #6b7280;">${packageData.sender_country}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">TO</div>
+              <div class="info-value">${packageData.receiver_name}</div>
+              <div class="info-value" style="font-size: 12px; color: #6b7280;">${packageData.receiver_country}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">PRODUCT</div>
+              <div class="info-value">${packageData.product_name}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">WEIGHT</div>
+              <div class="info-value">${packageData.weight} kg</div>
+            </div>
+          </div>
+
+          <p>Track your package anytime by visiting our website and entering your tracking number.</p>
+          
+          <div style="text-align: center;">
+            <a href="${process.env.APP_URL || 'http://localhost:5173'}" class="button">Track Package</a>
+          </div>
+        </div>
+        <div class="footer">
+          <p>SwiftShip Express - Global Logistics Solutions</p>
+          <p>87 George Street DURHAM DH6 6YK</p>
+          <p>info@swiftshipexpress.com | www.swiftshipexpress.com</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `
+}
+
+// Send package registration email
+export const sendPackageRegistrationEmail = async (packageData) => {
+  // Try Brevo API first
+  if (process.env.BREVO_API_KEY) {
+    try {
+      console.log('Sending package registration email via Brevo API')
+      const apiInstance = new brevo.TransactionalEmailsApi()
+      apiInstance.setApiKey(brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY)
+      
+      const sendSmtpEmail = new brevo.SendSmtpEmail()
+      sendSmtpEmail.sender = { name: 'SwiftShip Express', email: process.env.BREVO_FROM_EMAIL }
+      sendSmtpEmail.to = [{ email: packageData.receiver_email, name: packageData.receiver_name }]
+      sendSmtpEmail.subject = `Package Registered - Tracking #${packageData.tracking_number}`
+      sendSmtpEmail.htmlContent = getPackageRegistrationTemplate(packageData)
+      
+      const result = await apiInstance.sendTransacEmail(sendSmtpEmail)
+      console.log('Package registration email sent:', result.messageId)
+      return { success: true, messageId: result.messageId }
+    } catch (error) {
+      console.error('Brevo API error:', error.message)
+      return { success: false, error: error.message }
+    }
+  }
+  
+  // Fallback to SMTP
+  try {
+    const transporter = createTransporter()
+    
+    const fromEmail = process.env.BREVO_FROM_EMAIL || process.env.SMTP_USER
+    
+    const mailOptions = {
+      from: `"SwiftShip Express" <${fromEmail}>`,
+      to: packageData.receiver_email,
+      subject: `Package Registered - Tracking #${packageData.tracking_number}`,
+      html: getPackageRegistrationTemplate(packageData),
+    }
+
+    const info = await transporter.sendMail(mailOptions)
+    console.log('Package registration email sent via SMTP:', info.messageId)
+    return { success: true, messageId: info.messageId }
+  } catch (error) {
+    console.error('Error sending package registration email:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+// Send welcome email using Brevo API (fallback to SMTP) - DEPRECATED
 export const sendWelcomeEmail = async (userEmail, userName) => {
   // Try Brevo API first (more reliable on hosting platforms)
   if (process.env.BREVO_API_KEY) {
