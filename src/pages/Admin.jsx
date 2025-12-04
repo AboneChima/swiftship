@@ -4,8 +4,9 @@ import { useReactToPrint } from 'react-to-print'
 import { FiPackage, FiUsers, FiPlus, FiEdit2, FiTrash2, FiPrinter, FiX, FiSave, FiCheckCircle, FiTruck, FiClock, FiBox, FiMail } from 'react-icons/fi'
 import EmailNotification from '../components/EmailNotification'
 import PackageForm from '../components/PackageForm'
+import Receipt from '../components/Receipt'
 
-function Receipt({ packageData }) {
+function OldReceipt({ packageData }) {
   const currentDate = new Date()
   const formattedDate = currentDate.toLocaleDateString('en-US', { 
     weekday: 'long', 

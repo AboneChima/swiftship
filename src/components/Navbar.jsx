@@ -34,15 +34,11 @@ export default function Navbar() {
             </button>
 
             <ul className="hidden lg:flex items-center gap-8">
-              {!user && <li><Link to="/" className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiPackage /> Home</Link></li>}
+              <li><Link to="/" className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiPackage /> Home</Link></li>
               <li><Link to="/tracking" className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiSearch /> Track Package</Link></li>
-              {user ? (
+              {user && user.role === 'admin' && (
                 <>
-                  {user.role === 'admin' ? (
-                    <li><Link to="/admin" className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiShield /> Admin Panel</Link></li>
-                  ) : (
-                    <li><Link to="/dashboard" className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiUser /> Dashboard</Link></li>
-                  )}
+                  <li><Link to="/admin" className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiShield /> Admin Panel</Link></li>
                   <li className="text-gray-400 flex items-center gap-2"><FiUser size={16} /> {user.name}</li>
                   <li>
                     <button onClick={logout} className="bg-accent-danger hover:bg-red-600 px-4 py-2 rounded-lg transition flex items-center gap-2">
@@ -50,11 +46,9 @@ export default function Navbar() {
                     </button>
                   </li>
                 </>
-              ) : (
-                <>
-                  <li><button onClick={() => openAuth('login')} className="text-gray-300 hover:text-white transition">Login</button></li>
-                  <li><button onClick={() => openAuth('signup')} className="bg-accent-primary hover:bg-blue-600 px-4 py-2 rounded-lg transition">Sign Up</button></li>
-                </>
+              )}
+              {!user && (
+                <li><button onClick={() => openAuth('login')} className="text-gray-300 hover:text-white transition">Admin Login</button></li>
               )}
             </ul>
           </div>
@@ -62,15 +56,11 @@ export default function Navbar() {
           {mobileMenuOpen && (
             <div className="lg:hidden pb-4 border-t border-dark-border mt-2 pt-4">
               <ul className="flex flex-col gap-4">
-                {!user && <li><Link to="/" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiPackage /> Home</Link></li>}
+                <li><Link to="/" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiPackage /> Home</Link></li>
                 <li><Link to="/tracking" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiSearch /> Track Package</Link></li>
-                {user ? (
+                {user && user.role === 'admin' && (
                   <>
-                    {user.role === 'admin' ? (
-                      <li><Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiShield /> Admin Panel</Link></li>
-                    ) : (
-                      <li><Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiUser /> Dashboard</Link></li>
-                    )}
+                    <li><Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="text-gray-300 hover:text-white transition flex items-center gap-2"><FiShield /> Admin Panel</Link></li>
                     <li className="text-gray-400 flex items-center gap-2"><FiUser size={16} /> {user.name}</li>
                     <li>
                       <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="bg-accent-danger hover:bg-red-600 px-4 py-2 rounded-lg transition w-full text-left flex items-center gap-2">
@@ -78,11 +68,9 @@ export default function Navbar() {
                       </button>
                     </li>
                   </>
-                ) : (
-                  <>
-                    <li><button onClick={() => openAuth('login')} className="text-gray-300 hover:text-white transition w-full text-left">Login</button></li>
-                    <li><button onClick={() => openAuth('signup')} className="bg-accent-primary hover:bg-blue-600 px-4 py-2 rounded-lg transition w-full text-left">Sign Up</button></li>
-                  </>
+                )}
+                {!user && (
+                  <li><button onClick={() => openAuth('login')} className="text-gray-300 hover:text-white transition w-full text-left">Admin Login</button></li>
                 )}
               </ul>
             </div>
