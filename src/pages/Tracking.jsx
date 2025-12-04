@@ -85,7 +85,7 @@ export default function Tracking() {
                 <input
                   type="text"
                   value={trackingNumber}
-                  onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
+                  onChange={(e) => setTrackingNumber(e.target.value)}
                   placeholder="Enter tracking number (e.g., SSN-ONI-234567)"
                   className="w-full pl-16 pr-6 py-5 bg-dark-card border-2 border-dark-border rounded-xl text-white placeholder-gray-500 focus:border-accent-primary focus:outline-none transition text-lg"
                   required

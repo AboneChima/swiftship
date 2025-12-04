@@ -27,7 +27,8 @@ router.get('/my-packages', authenticateToken, async (req, res) => {
 
 router.get('/track/:trackingNumber', async (req, res) => {
   try {
-    const pkgResult = await query('SELECT * FROM packages WHERE tracking_number = $1', [req.params.trackingNumber])
+    // Case-insensitive search
+    const pkgResult = await query('SELECT * FROM packages WHERE LOWER(tracking_number) = LOWER($1)', [req.params.trackingNumber])
     
     if (pkgResult.rows.length === 0) {
       return res.status(404).json({ message: 'Package not found' })
