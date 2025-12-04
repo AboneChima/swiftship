@@ -47,9 +47,6 @@ export default function Navbar() {
                   </li>
                 </>
               )}
-              {!user && (
-                <li><button onClick={() => openAuth('login')} className="text-gray-300 hover:text-white transition">Admin Login</button></li>
-              )}
             </ul>
           </div>
 
@@ -68,9 +65,6 @@ export default function Navbar() {
                       </button>
                     </li>
                   </>
-                )}
-                {!user && (
-                  <li><button onClick={() => openAuth('login')} className="text-gray-300 hover:text-white transition w-full text-left">Admin Login</button></li>
                 )}
               </ul>
             </div>
