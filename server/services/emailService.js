@@ -213,7 +213,7 @@ const getPackageRegistrationTemplate = (packageData) => {
                   
                   <p style="margin: 16px 0 0 0; color: #6b7280; font-size: 13px; line-height: 1.5;">You can track your shipment anytime at swiftshipexpress.live</p>
                   
-                  <p style="margin: 16px 0 0 0; color: #6b7280; font-size: 12px; line-height: 1.5;">If you have questions, contact us at info@swiftshipexpress.live</p>
+                  <p style="margin: 16px 0 0 0; color: #9ca3af; font-size: 11px; line-height: 1.5; font-style: italic;">This is an automated notification. Please do not reply to this email.</p>
                 </td>
               </tr>
               
@@ -246,10 +246,11 @@ export const sendPackageRegistrationEmail = async (packageData) => {
       
       const sendSmtpEmail = new brevo.SendSmtpEmail()
       sendSmtpEmail.sender = { name: 'SwiftShip Express', email: process.env.BREVO_FROM_EMAIL }
+      sendSmtpEmail.replyTo = { name: 'SwiftShip Express', email: 'noreply@swiftshipexpress.live' }
       sendSmtpEmail.to = [{ email: packageData.receiver_email, name: packageData.receiver_name }]
       sendSmtpEmail.subject = `Your Package ${packageData.tracking_number} is Registered`
       sendSmtpEmail.htmlContent = getPackageRegistrationTemplate(packageData)
-      sendSmtpEmail.textContent = `Hello ${packageData.receiver_name},\n\nYour package has been registered with SwiftShip Express.\n\nTracking Number: ${packageData.tracking_number}\nFrom: ${packageData.sender_name}, ${packageData.sender_country}\nProduct: ${packageData.product_name}\nWeight: ${packageData.weight} kg\n\nTrack your package at: https://swiftshipexpress.live/tracking\n\nBest regards,\nSwiftShip Express Team\n87 George Street DURHAM DH6 6YK\ninfo@swiftshipexpress.live`
+      sendSmtpEmail.textContent = `Hello ${packageData.receiver_name},\n\nYour package has been registered with SwiftShip Express.\n\nTracking Number: ${packageData.tracking_number}\nFrom: ${packageData.sender_name}, ${packageData.sender_country}\nProduct: ${packageData.product_name}\nWeight: ${packageData.weight} kg\n\nTrack your package at: https://swiftshipexpress.live/tracking\n\nBest regards,\nSwiftShip Express Team\n87 George Street DURHAM DH6 6YK\n\nThis is an automated notification. Please do not reply to this email.`
       sendSmtpEmail.tags = ['package-registration', 'transactional']
       
       const result = await apiInstance.sendTransacEmail(sendSmtpEmail)
@@ -341,10 +342,11 @@ export const sendCustomEmail = async (userEmail, userName, subject, message, att
       
       const sendSmtpEmail = new brevo.SendSmtpEmail()
       sendSmtpEmail.sender = { name: 'SwiftShip Express', email: process.env.BREVO_FROM_EMAIL }
+      sendSmtpEmail.replyTo = { name: 'SwiftShip Express', email: 'noreply@swiftshipexpress.live' }
       sendSmtpEmail.to = [{ email: userEmail, name: userName }]
       sendSmtpEmail.subject = subject
       sendSmtpEmail.htmlContent = getCustomEmailTemplate(subject, message)
-      sendSmtpEmail.textContent = `Hello ${userName},\n\n${message}\n\nBest regards,\nSwiftShip Express Team\n87 George Street DURHAM DH6 6YK\ninfo@swiftshipexpress.live`
+      sendSmtpEmail.textContent = `Hello ${userName},\n\n${message}\n\nBest regards,\nSwiftShip Express Team\n87 George Street DURHAM DH6 6YK\n\nThis is an automated notification. Please do not reply to this email.`
       sendSmtpEmail.tags = ['admin-notification', 'transactional']
       
       // Add attachment if provided
