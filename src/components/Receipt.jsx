@@ -306,29 +306,18 @@ export default function Receipt({ packageData }) {
             justifyContent: 'center'
           }}>
             <div style={{ 
-              fontSize: '13px', 
+              fontSize: '14px', 
               fontWeight: 'bold', 
-              marginBottom: '8px',
-              color: '#000'
+              color: '#000',
+              marginBottom: '4px'
             }}>
-              Official Stamp/{formattedDate}
+              Official Stamp
             </div>
-            <div style={{
-              width: '120px',
-              height: '120px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
+            <div style={{ 
+              fontSize: '13px', 
+              color: '#6b7280'
             }}>
-              <img 
-                src="/watermark.png" 
-                alt="Official Stamp" 
-                style={{ 
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain'
-                }} 
-              />
+              {formattedDate}
             </div>
           </div>
         </div>
@@ -352,7 +341,6 @@ export default function Receipt({ packageData }) {
       }}>
         <strong>SwiftShip Express</strong> | 87 George Street DURHAM DH6 6YK<br/>
         info@swiftshipexpress.com | www.swiftshipexpress.live
-      </div>
       </div>
     </div>
   )
