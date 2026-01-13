@@ -1,8 +1,9 @@
 export default function Receipt({ packageData }) {
   const currentDate = new Date()
   const formattedDate = currentDate.toLocaleDateString('en-US', { 
+    weekday: 'long',
     year: 'numeric', 
-    month: 'short', 
+    month: 'long', 
     day: 'numeric' 
   })
 
@@ -10,8 +11,8 @@ export default function Receipt({ packageData }) {
     if (!dateString) return 'N/A'
     return new Date(dateString).toLocaleDateString('en-US', { 
       year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+      month: '2-digit', 
+      day: '2-digit' 
     })
   }
 
@@ -21,7 +22,7 @@ export default function Receipt({ packageData }) {
     <div style={{
       width: '210mm',
       height: '297mm',
-      padding: '12mm',
+      padding: '15mm',
       backgroundColor: '#ffffff',
       color: '#000000',
       fontFamily: 'Arial, sans-serif',
@@ -29,7 +30,7 @@ export default function Receipt({ packageData }) {
       boxSizing: 'border-box',
       WebkitPrintColorAdjust: 'exact',
       printColorAdjust: 'exact',
-      fontSize: '15px'
+      fontSize: '14px'
     }}>
       {/* Red Border */}
       <div style={{
@@ -38,24 +39,25 @@ export default function Receipt({ packageData }) {
         left: '8mm',
         right: '8mm',
         bottom: '8mm',
-        border: '3px solid #dc2626',
-        pointerEvents: 'none'
+        border: '4px solid #dc2626',
+        pointerEvents: 'none',
+        borderRadius: '4px'
       }}></div>
 
       {/* Certified True Copy Text Watermark */}
       <div style={{
         position: 'absolute',
-        top: '18%',
-        left: '15%',
-        transform: 'rotate(-50deg)',
+        top: '25%',
+        left: '20%',
+        transform: 'rotate(-45deg)',
         pointerEvents: 'none',
         zIndex: 10,
-        opacity: 0.5,
-        fontSize: '28px',
-        fontWeight: '400',
-        color: '#1f2937',
+        opacity: 0.15,
+        fontSize: '48px',
+        fontWeight: '600',
+        color: '#374151',
         whiteSpace: 'nowrap',
-        letterSpacing: '2px',
+        letterSpacing: '4px',
         fontFamily: 'Arial, sans-serif',
         WebkitPrintColorAdjust: 'exact',
         printColorAdjust: 'exact'
@@ -65,39 +67,56 @@ export default function Receipt({ packageData }) {
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 2 }}>
-        {/* Header with Logo */}
+        {/* Header with Logo and Tracking */}
         <div style={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'flex-start',
-          marginBottom: '10px',
-          borderBottom: '3px solid #1e40af',
-          paddingBottom: '8px'
+          marginBottom: '20px'
         }}>
-          <div>
-            <h1 style={{ 
-              fontSize: '32px', 
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <div style={{
+              width: '60px',
+              height: '60px',
+              background: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: '32px',
               fontWeight: 'bold',
-              color: '#1e40af',
-              margin: '0 0 5px 0',
-              letterSpacing: '2px'
-            }}>SWIFTSHIP EXPRESS</h1>
-            <div style={{ 
-              fontSize: '13px', 
-              color: '#6b7280',
-              fontWeight: '600'
-            }}>GLOBAL LOGISTICS SOLUTIONS</div>
+              WebkitPrintColorAdjust: 'exact',
+              printColorAdjust: 'exact'
+            }}>
+              <span style={{ transform: 'rotate(-10deg)' }}>✈</span>
+            </div>
+            <div>
+              <h1 style={{ 
+                fontSize: '28px', 
+                fontWeight: 'bold',
+                color: '#1e40af',
+                margin: '0 0 4px 0',
+                letterSpacing: '1px'
+              }}>SWIFTSHIP EXPRESS</h1>
+              <div style={{ 
+                fontSize: '11px', 
+                color: '#6b7280',
+                fontWeight: '600',
+                letterSpacing: '1px'
+              }}>GLOBAL LOGISTICS SOLUTIONS</div>
+            </div>
           </div>
           <div style={{ 
-            width: '120px',
-            height: '60px',
+            width: '140px',
+            height: '90px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
             <img 
               src="/top-right-image.png" 
-              alt="Logo" 
+              alt="Logistics" 
               style={{ 
                 width: '100%',
                 height: '100%',
@@ -107,197 +126,277 @@ export default function Receipt({ packageData }) {
           </div>
         </div>
 
-        {/* Tracking Number - Large & Compact */}
+        {/* Tracking Number */}
+        <div style={{ marginBottom: '15px' }}>
+          <span style={{ fontSize: '15px', fontWeight: 'bold', color: '#000' }}>Tracking Number: </span>
+          <span style={{ 
+            fontSize: '15px',
+            fontWeight: 'bold',
+            color: '#dc2626',
+            fontFamily: 'monospace',
+            letterSpacing: '1px'
+          }}>{packageData.tracking_number}</span>
+        </div>
+
+        {/* Company Info Box */}
         <div style={{ 
           textAlign: 'center',
-          backgroundColor: '#dbeafe',
-          padding: '10px',
+          marginBottom: '20px',
+          padding: '15px',
+          backgroundColor: '#f8fafc',
           borderRadius: '8px',
-          marginBottom: '10px',
-          border: '3px solid #3b82f6'
+          border: '1px solid #e2e8f0',
+          WebkitPrintColorAdjust: 'exact',
+          printColorAdjust: 'exact'
         }}>
-          <div style={{ fontSize: '14px', color: '#6b7280', marginBottom: '5px', fontWeight: 'bold' }}>
-            TRACKING NUMBER
-          </div>
-          <div style={{ 
-            fontSize: '32px',
-            fontWeight: 'bold',
-            color: '#1e40af',
-            fontFamily: 'monospace',
-            letterSpacing: '3px'
-          }}>
-            {packageData.tracking_number}
+          <h2 style={{ 
+            fontSize: '18px', 
+            fontWeight: 'bold', 
+            margin: '0 0 8px 0',
+            color: '#1e40af'
+          }}>SwiftShip Express</h2>
+          <div style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6' }}>
+            <strong>Address:</strong> 87 George Street DURHAM DH6 6YK | <strong>Email:</strong> info@swiftshipexpress.com | <strong>Website:</strong> www.swiftshipexpress.com
           </div>
         </div>
 
-        {/* Product & Dates - Compact */}
+        {/* Three Column Layout: Sender, Receiver, Barcode */}
         <div style={{ 
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '10px',
-          marginBottom: '10px'
-        }}>
-          <div style={{ 
-            backgroundColor: '#f0fdf4',
-            padding: '10px',
-            borderRadius: '8px',
-            border: '2px solid #22c55e'
-          }}>
-            <div style={{ fontSize: '13px', color: '#6b7280', fontWeight: 'bold', marginBottom: '6px' }}>
-              PRODUCT
-            </div>
-            <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#000', marginBottom: '4px' }}>
-              {packageData.product_name || 'Package'}
-            </div>
-            <div style={{ fontSize: '16px', color: '#6b7280' }}>
-              Weight: {packageData.weight} kg
-            </div>
-          </div>
-          <div style={{ 
-            backgroundColor: '#fef3c7',
-            padding: '10px',
-            borderRadius: '8px',
-            border: '2px solid #eab308'
-          }}>
-            <div style={{ fontSize: '13px', color: '#6b7280', fontWeight: 'bold', marginBottom: '6px' }}>
-              DATES
-            </div>
-            <div style={{ fontSize: '15px', lineHeight: '1.5' }}>
-              <div><strong>Collection:</strong> {formatDate(packageData.collection_date)}</div>
-              <div><strong>Delivery:</strong> {formatDate(packageData.delivery_date)}</div>
-              <div><strong>Arrival:</strong> {formatDate(packageData.arrival_date)}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Sender & Receiver - Compact but Large Text */}
-        <div style={{ 
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '10px',
-          marginBottom: '10px'
+          display: 'grid', 
+          gridTemplateColumns: '1fr 1fr 1fr',
+          gap: '15px',
+          marginBottom: '20px'
         }}>
           {/* Sender */}
           <div style={{
             backgroundColor: '#fef3c7',
-            padding: '10px',
+            padding: '15px',
             borderRadius: '8px',
-            border: '2px solid #fbbf24'
+            border: '2px solid #fbbf24',
+            WebkitPrintColorAdjust: 'exact',
+            printColorAdjust: 'exact'
           }}>
             <h3 style={{ 
-              fontSize: '14px', 
+              fontSize: '13px', 
               fontWeight: 'bold',
-              marginBottom: '6px',
+              marginBottom: '10px',
               color: '#000',
-              textTransform: 'uppercase',
-              letterSpacing: '1px'
+              textTransform: 'uppercase'
             }}>FROM (SENDER)</h3>
-            <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '6px', color: '#000' }}>
+            <div style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', color: '#000' }}>
               {packageData.sender_name}
             </div>
-            <div style={{ fontSize: '15px', color: '#4b5563', lineHeight: '1.5' }}>
-              <div><strong>Phone:</strong> {packageData.sender_phone || 'N/A'}</div>
-              <div><strong>Email:</strong> {packageData.sender_email || 'N/A'}</div>
-              <div><strong>ID:</strong> {packageData.sender_id || 'N/A'}</div>
-              <div><strong>Country:</strong> {packageData.sender_country || 'N/A'}</div>
+            <div style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.7' }}>
               <div><strong>Address:</strong> {packageData.sender_location}</div>
+              <div><strong>Origin:</strong> SwiftShip Express</div>
             </div>
           </div>
 
           {/* Receiver */}
           <div style={{
             backgroundColor: '#dbeafe',
-            padding: '10px',
+            padding: '15px',
             borderRadius: '8px',
-            border: '2px solid #3b82f6'
+            border: '2px solid #3b82f6',
+            WebkitPrintColorAdjust: 'exact',
+            printColorAdjust: 'exact'
           }}>
             <h3 style={{ 
-              fontSize: '14px', 
+              fontSize: '13px', 
               fontWeight: 'bold',
-              marginBottom: '6px',
+              marginBottom: '10px',
               color: '#000',
-              textTransform: 'uppercase',
-              letterSpacing: '1px'
+              textTransform: 'uppercase'
             }}>TO (CONSIGNEE)</h3>
-            <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '6px', color: '#000' }}>
+            <div style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', color: '#000' }}>
               {packageData.receiver_name}
             </div>
-            <div style={{ fontSize: '15px', color: '#4b5563', lineHeight: '1.5' }}>
-              <div><strong>Phone:</strong> {packageData.receiver_phone || 'N/A'}</div>
-              <div><strong>Email:</strong> {packageData.receiver_email || 'N/A'}</div>
-              <div><strong>Country:</strong> {packageData.receiver_country || 'N/A'}</div>
+            <div style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.7' }}>
+              <div><strong>Phone:</strong> {packageData.receiver_phone || '+1234567890'}</div>
               <div><strong>Address:</strong> {packageData.receiver_location}</div>
+            </div>
+          </div>
+
+          {/* Barcode and Order Info */}
+          <div>
+            <div style={{
+              border: '2px solid #000',
+              padding: '12px',
+              textAlign: 'center',
+              marginBottom: '12px',
+              backgroundColor: '#fff',
+              borderRadius: '6px'
+            }}>
+              <img 
+                src="/new barcode.png" 
+                alt="Barcode" 
+                style={{ 
+                  width: '100%',
+                  height: '80px',
+                  objectFit: 'contain',
+                  marginBottom: '8px'
+                }} 
+              />
+              <div style={{ 
+                fontSize: '11px', 
+                fontFamily: 'monospace', 
+                fontWeight: 'bold',
+                color: '#000'
+              }}>
+                {packageData.tracking_number}
+              </div>
+            </div>
+            <div style={{ 
+              fontSize: '12px', 
+              lineHeight: '1.9',
+              backgroundColor: '#f9fafb',
+              padding: '12px',
+              borderRadius: '6px',
+              border: '1px solid #d1d5db'
+            }}>
+              <div><strong>Order ID:</strong> {packageData.id || '2'}</div>
+              <div><strong>Payment Due:</strong> {formatDate(packageData.delivery_date)}</div>
+              <div><strong>Booking Mode:</strong> <span style={{ 
+                border: '1px solid #000', 
+                padding: '2px 8px',
+                display: 'inline-block',
+                fontWeight: 'bold'
+              }}>Express</span></div>
+              <div><strong>Insurance:</strong> 0 Gift</div>
+              <div><strong>Luggage:</strong> {packageData.weight} kg</div>
             </div>
           </div>
         </div>
 
-        {/* Costs Table - Large & Compact */}
+        {/* Shipment Details Table */}
         <table style={{ 
           width: '100%', 
           borderCollapse: 'collapse',
-          marginBottom: '10px',
-          fontSize: '16px'
+          marginBottom: '20px',
+          fontSize: '13px'
         }}>
           <thead>
             <tr style={{ 
               background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
-              color: '#fff'
+              color: '#fff',
+              WebkitPrintColorAdjust: 'exact',
+              printColorAdjust: 'exact'
             }}>
-              <th style={{ padding: '10px', textAlign: 'left', border: '2px solid #2563eb', fontSize: '17px' }}>Description</th>
-              <th style={{ padding: '10px', textAlign: 'left', border: '2px solid #2563eb', fontSize: '17px' }}>Status</th>
-              <th style={{ padding: '10px', textAlign: 'right', border: '2px solid #2563eb', fontSize: '17px' }}>Amount</th>
+              <th style={{ padding: '12px', textAlign: 'left', border: '1px solid #2563eb', fontWeight: 'bold' }}>Qty</th>
+              <th style={{ padding: '12px', textAlign: 'left', border: '1px solid #2563eb', fontWeight: 'bold' }}>Product</th>
+              <th style={{ padding: '12px', textAlign: 'left', border: '1px solid #2563eb', fontWeight: 'bold' }}>Status</th>
+              <th style={{ padding: '12px', textAlign: 'left', border: '1px solid #2563eb', fontWeight: 'bold' }}>Description</th>
+              <th style={{ padding: '12px', textAlign: 'left', border: '1px solid #2563eb', fontWeight: 'bold' }}>Shipping</th>
+              <th style={{ padding: '12px', textAlign: 'left', border: '1px solid #2563eb', fontWeight: 'bold' }}>Clearance</th>
+              <th style={{ padding: '12px', textAlign: 'left', border: '1px solid #2563eb', fontWeight: 'bold' }}>Total</th>
             </tr>
           </thead>
           <tbody>
-            <tr style={{ backgroundColor: '#f8fafc' }}>
-              <td style={{ padding: '10px', border: '2px solid #d1d5db', fontSize: '17px' }}>Shipping Cost</td>
-              <td style={{ padding: '10px', border: '2px solid #d1d5db' }}>
+            <tr style={{ 
+              backgroundColor: '#f8fafc',
+              WebkitPrintColorAdjust: 'exact',
+              printColorAdjust: 'exact'
+            }}>
+              <td style={{ padding: '12px', border: '1px solid #d1d5db', fontWeight: '600' }}>1</td>
+              <td style={{ padding: '12px', border: '1px solid #d1d5db', fontWeight: '600' }}>shipment</td>
+              <td style={{ padding: '12px', border: '1px solid #d1d5db' }}>
                 <span style={{ 
                   border: '2px solid #000', 
                   padding: '4px 10px',
                   display: 'inline-block',
                   fontWeight: 'bold',
-                  fontSize: '15px'
-                }}>{packageData.status?.toUpperCase()}</span>
+                  fontSize: '12px'
+                }}>{packageData.status}</span>
               </td>
-              <td style={{ padding: '10px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '20px' }}>
-                $ {parseFloat(packageData.shipping_cost || 0).toFixed(2)}
-              </td>
-            </tr>
-            <tr style={{ backgroundColor: '#fff' }}>
-              <td style={{ padding: '10px', border: '2px solid #d1d5db', fontSize: '17px' }}>Clearance Cost</td>
-              <td style={{ padding: '10px', border: '2px solid #d1d5db' }}></td>
-              <td style={{ padding: '10px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '20px' }}>
-                $ {parseFloat(packageData.clearance_cost || 0).toFixed(2)}
-              </td>
-            </tr>
-            <tr style={{ backgroundColor: '#dbeafe' }}>
-              <td style={{ padding: '10px', border: '2px solid #d1d5db', fontSize: '19px', fontWeight: 'bold' }}>TOTAL</td>
-              <td style={{ padding: '10px', border: '2px solid #d1d5db' }}></td>
-              <td style={{ padding: '10px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '24px', color: '#1e40af' }}>
-                $ {totalCost.toFixed(2)}
-              </td>
+              <td style={{ padding: '12px', border: '1px solid #d1d5db' }}>Shipping</td>
+              <td style={{ padding: '12px', border: '1px solid #d1d5db', fontWeight: '600' }}>$ {parseFloat(packageData.shipping_cost || 0).toFixed(2)}</td>
+              <td style={{ padding: '12px', border: '1px solid #d1d5db', fontWeight: '600' }}>$ {parseFloat(packageData.clearance_cost || 0).toFixed(2)}</td>
+              <td style={{ padding: '12px', border: '1px solid #d1d5db', fontWeight: 'bold', fontSize: '15px' }}>$ {totalCost.toFixed(2)}</td>
             </tr>
           </tbody>
         </table>
 
-        {/* Footer - Compact */}
+        {/* Official Stamp and Payment Methods */}
         <div style={{ 
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingTop: '8px',
-          borderTop: '2px solid #e5e7eb',
-          marginBottom: '8px'
+          alignItems: 'flex-start',
+          marginTop: '20px',
+          gap: '30px'
         }}>
+          {/* Payment Methods */}
           <div style={{ flex: 1 }}>
-            <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '6px' }}>Payment Methods:</h3>
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-              <div style={{ padding: '5px 8px', backgroundColor: '#1a1f71', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '11px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>VISA</div>
-              <div style={{ padding: '5px 8px', background: 'linear-gradient(90deg, #eb001b 0%, #f79e1b 100%)', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '11px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>Mastercard</div>
-              <div style={{ padding: '5px 8px', backgroundColor: '#003087', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '11px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>PayPal</div>
+            <h3 style={{ fontSize: '15px', fontWeight: 'bold', marginBottom: '12px', color: '#000' }}>Payment Methods:</h3>
+            <div style={{
+              border: '2px solid #e5e7eb',
+              padding: '14px',
+              borderRadius: '8px',
+              backgroundColor: '#f9fafb',
+              marginBottom: '8px',
+              WebkitPrintColorAdjust: 'exact',
+              printColorAdjust: 'exact'
+            }}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '12px',
+                marginBottom: '10px',
+                flexWrap: 'wrap'
+              }}>
+                <div style={{ 
+                  padding: '6px 10px',
+                  backgroundColor: '#fff',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  fontSize: '10px',
+                  fontWeight: 'bold',
+                  color: '#000'
+                }}>SECURED BY GeoTrust</div>
+                <div style={{ 
+                  padding: '6px 10px',
+                  backgroundColor: '#1a1f71',
+                  color: '#fff',
+                  borderRadius: '4px',
+                  fontWeight: 'bold',
+                  fontSize: '11px',
+                  WebkitPrintColorAdjust: 'exact',
+                  printColorAdjust: 'exact'
+                }}>VISA</div>
+                <div style={{ 
+                  padding: '6px 10px',
+                  background: 'linear-gradient(90deg, #eb001b 0%, #f79e1b 100%)',
+                  color: '#fff',
+                  borderRadius: '4px',
+                  fontWeight: 'bold',
+                  fontSize: '11px',
+                  WebkitPrintColorAdjust: 'exact',
+                  printColorAdjust: 'exact'
+                }}>Mastercard</div>
+                <div style={{ 
+                  padding: '6px 10px',
+                  backgroundColor: '#003087',
+                  color: '#fff',
+                  borderRadius: '4px',
+                  fontWeight: 'bold',
+                  fontSize: '11px',
+                  WebkitPrintColorAdjust: 'exact',
+                  printColorAdjust: 'exact'
+                }}>PayPal</div>
+              </div>
+              <div style={{
+                fontSize: '13px',
+                color: '#000',
+                fontWeight: 'bold'
+              }}>
+                SAFE SHOPPING
+              </div>
             </div>
+            <p style={{ fontSize: '11px', color: '#6b7280', lineHeight: '1.5', margin: 0 }}>
+              For your convenience we have SwiftShip Express several payment reliable, fast, secure.
+            </p>
           </div>
+
+          {/* Official Stamp */}
           <div style={{ 
             textAlign: 'center',
             display: 'flex',
@@ -308,18 +407,17 @@ export default function Receipt({ packageData }) {
             <div style={{ 
               fontSize: '13px', 
               fontWeight: 'bold', 
-              color: '#000',
-              marginBottom: '6px'
+              marginBottom: '10px',
+              color: '#000'
             }}>
-              Official Stamp
+              Official Stamp/{formattedDate}
             </div>
             <div style={{
-              width: '120px',
-              height: '120px',
+              width: '140px',
+              height: '140px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '4px'
+              justifyContent: 'center'
             }}>
               <img 
                 src="/watermark.png" 
@@ -332,33 +430,14 @@ export default function Receipt({ packageData }) {
               />
             </div>
             <div style={{ 
-              fontSize: '12px', 
-              color: '#6b7280'
+              fontSize: '11px', 
+              color: '#6b7280',
+              marginTop: '8px'
             }}>
-              {formattedDate}
+              Stamp Duty:
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Company Footer - Positioned at Bottom */}
-      <div style={{ 
-        position: 'absolute',
-        bottom: '12mm',
-        left: '12mm',
-        right: '12mm',
-        textAlign: 'center',
-        padding: '8px',
-        backgroundColor: '#f8fafc',
-        borderRadius: '6px',
-        fontSize: '13px',
-        color: '#6b7280',
-        zIndex: 3,
-        WebkitPrintColorAdjust: 'exact',
-        printColorAdjust: 'exact'
-      }}>
-        <strong>SwiftShip Express</strong> | 87 George Street DURHAM DH6 6YK<br/>
-        info@swiftshipexpress.com | www.swiftshipexpress.live
       </div>
     </div>
   )
