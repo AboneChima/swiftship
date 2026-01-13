@@ -287,7 +287,8 @@ export default function Receipt({ packageData }) {
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingTop: '8px',
-          borderTop: '2px solid #e5e7eb'
+          borderTop: '2px solid #e5e7eb',
+          marginBottom: '8px'
         }}>
           <div style={{ flex: 1 }}>
             <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '6px' }}>Payment Methods:</h3>
@@ -305,16 +306,16 @@ export default function Receipt({ packageData }) {
             justifyContent: 'center'
           }}>
             <div style={{ 
-              fontSize: '12px', 
+              fontSize: '13px', 
               fontWeight: 'bold', 
-              marginBottom: '6px',
+              marginBottom: '8px',
               color: '#000'
             }}>
               Official Stamp/{formattedDate}
             </div>
             <div style={{
-              width: '100px',
-              height: '100px',
+              width: '120px',
+              height: '120px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -331,20 +332,27 @@ export default function Receipt({ packageData }) {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Company Footer - Compact */}
-        <div style={{ 
-          textAlign: 'center',
-          marginTop: '8px',
-          padding: '8px',
-          backgroundColor: '#f8fafc',
-          borderRadius: '6px',
-          fontSize: '13px',
-          color: '#6b7280'
-        }}>
-          <strong>SwiftShip Express</strong> | 87 George Street DURHAM DH6 6YK<br/>
-          info@swiftshipexpress.com | www.swiftshipexpress.live
-        </div>
+      {/* Company Footer - Positioned at Bottom */}
+      <div style={{ 
+        position: 'absolute',
+        bottom: '12mm',
+        left: '12mm',
+        right: '12mm',
+        textAlign: 'center',
+        padding: '8px',
+        backgroundColor: '#f8fafc',
+        borderRadius: '6px',
+        fontSize: '13px',
+        color: '#6b7280',
+        zIndex: 3,
+        WebkitPrintColorAdjust: 'exact',
+        printColorAdjust: 'exact'
+      }}>
+        <strong>SwiftShip Express</strong> | 87 George Street DURHAM DH6 6YK<br/>
+        info@swiftshipexpress.com | www.swiftshipexpress.live
+      </div>
       </div>
     </div>
   )
