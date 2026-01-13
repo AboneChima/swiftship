@@ -70,9 +70,9 @@ export default function Receipt({ packageData }) {
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'flex-start',
-          marginBottom: '15px',
+          marginBottom: '10px',
           borderBottom: '3px solid #1e40af',
-          paddingBottom: '12px'
+          paddingBottom: '8px'
         }}>
           <div>
             <h1 style={{ 
@@ -111,9 +111,9 @@ export default function Receipt({ packageData }) {
         <div style={{ 
           textAlign: 'center',
           backgroundColor: '#dbeafe',
-          padding: '15px',
+          padding: '10px',
           borderRadius: '8px',
-          marginBottom: '15px',
+          marginBottom: '10px',
           border: '3px solid #3b82f6'
         }}>
           <div style={{ fontSize: '14px', color: '#6b7280', marginBottom: '5px', fontWeight: 'bold' }}>
@@ -134,12 +134,12 @@ export default function Receipt({ packageData }) {
         <div style={{ 
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '12px',
-          marginBottom: '15px'
+          gap: '10px',
+          marginBottom: '10px'
         }}>
           <div style={{ 
             backgroundColor: '#f0fdf4',
-            padding: '12px',
+            padding: '10px',
             borderRadius: '8px',
             border: '2px solid #22c55e'
           }}>
@@ -155,14 +155,14 @@ export default function Receipt({ packageData }) {
           </div>
           <div style={{ 
             backgroundColor: '#fef3c7',
-            padding: '12px',
+            padding: '10px',
             borderRadius: '8px',
             border: '2px solid #eab308'
           }}>
             <div style={{ fontSize: '13px', color: '#6b7280', fontWeight: 'bold', marginBottom: '6px' }}>
               DATES
             </div>
-            <div style={{ fontSize: '15px', lineHeight: '1.6' }}>
+            <div style={{ fontSize: '15px', lineHeight: '1.5' }}>
               <div><strong>Collection:</strong> {formatDate(packageData.collection_date)}</div>
               <div><strong>Delivery:</strong> {formatDate(packageData.delivery_date)}</div>
               <div><strong>Arrival:</strong> {formatDate(packageData.arrival_date)}</div>
@@ -174,28 +174,28 @@ export default function Receipt({ packageData }) {
         <div style={{ 
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '12px',
-          marginBottom: '15px'
+          gap: '10px',
+          marginBottom: '10px'
         }}>
           {/* Sender */}
           <div style={{
             backgroundColor: '#fef3c7',
-            padding: '12px',
+            padding: '10px',
             borderRadius: '8px',
             border: '2px solid #fbbf24'
           }}>
             <h3 style={{ 
               fontSize: '14px', 
               fontWeight: 'bold',
-              marginBottom: '8px',
+              marginBottom: '6px',
               color: '#000',
               textTransform: 'uppercase',
               letterSpacing: '1px'
             }}>FROM (SENDER)</h3>
-            <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px', color: '#000' }}>
+            <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '6px', color: '#000' }}>
               {packageData.sender_name}
             </div>
-            <div style={{ fontSize: '15px', color: '#4b5563', lineHeight: '1.6' }}>
+            <div style={{ fontSize: '15px', color: '#4b5563', lineHeight: '1.5' }}>
               <div><strong>Phone:</strong> {packageData.sender_phone || 'N/A'}</div>
               <div><strong>Email:</strong> {packageData.sender_email || 'N/A'}</div>
               <div><strong>ID:</strong> {packageData.sender_id || 'N/A'}</div>
@@ -207,22 +207,22 @@ export default function Receipt({ packageData }) {
           {/* Receiver */}
           <div style={{
             backgroundColor: '#dbeafe',
-            padding: '12px',
+            padding: '10px',
             borderRadius: '8px',
             border: '2px solid #3b82f6'
           }}>
             <h3 style={{ 
               fontSize: '14px', 
               fontWeight: 'bold',
-              marginBottom: '8px',
+              marginBottom: '6px',
               color: '#000',
               textTransform: 'uppercase',
               letterSpacing: '1px'
             }}>TO (CONSIGNEE)</h3>
-            <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px', color: '#000' }}>
+            <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '6px', color: '#000' }}>
               {packageData.receiver_name}
             </div>
-            <div style={{ fontSize: '15px', color: '#4b5563', lineHeight: '1.6' }}>
+            <div style={{ fontSize: '15px', color: '#4b5563', lineHeight: '1.5' }}>
               <div><strong>Phone:</strong> {packageData.receiver_phone || 'N/A'}</div>
               <div><strong>Email:</strong> {packageData.receiver_email || 'N/A'}</div>
               <div><strong>Country:</strong> {packageData.receiver_country || 'N/A'}</div>
@@ -235,7 +235,7 @@ export default function Receipt({ packageData }) {
         <table style={{ 
           width: '100%', 
           borderCollapse: 'collapse',
-          marginBottom: '15px',
+          marginBottom: '10px',
           fontSize: '16px'
         }}>
           <thead>
@@ -243,38 +243,38 @@ export default function Receipt({ packageData }) {
               background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
               color: '#fff'
             }}>
-              <th style={{ padding: '12px', textAlign: 'left', border: '2px solid #2563eb', fontSize: '17px' }}>Description</th>
-              <th style={{ padding: '12px', textAlign: 'left', border: '2px solid #2563eb', fontSize: '17px' }}>Status</th>
-              <th style={{ padding: '12px', textAlign: 'right', border: '2px solid #2563eb', fontSize: '17px' }}>Amount</th>
+              <th style={{ padding: '10px', textAlign: 'left', border: '2px solid #2563eb', fontSize: '17px' }}>Description</th>
+              <th style={{ padding: '10px', textAlign: 'left', border: '2px solid #2563eb', fontSize: '17px' }}>Status</th>
+              <th style={{ padding: '10px', textAlign: 'right', border: '2px solid #2563eb', fontSize: '17px' }}>Amount</th>
             </tr>
           </thead>
           <tbody>
             <tr style={{ backgroundColor: '#f8fafc' }}>
-              <td style={{ padding: '12px', border: '2px solid #d1d5db', fontSize: '17px' }}>Shipping Cost</td>
-              <td style={{ padding: '12px', border: '2px solid #d1d5db' }}>
+              <td style={{ padding: '10px', border: '2px solid #d1d5db', fontSize: '17px' }}>Shipping Cost</td>
+              <td style={{ padding: '10px', border: '2px solid #d1d5db' }}>
                 <span style={{ 
                   border: '2px solid #000', 
-                  padding: '6px 12px',
+                  padding: '4px 10px',
                   display: 'inline-block',
                   fontWeight: 'bold',
                   fontSize: '15px'
                 }}>{packageData.status?.toUpperCase()}</span>
               </td>
-              <td style={{ padding: '12px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '20px' }}>
+              <td style={{ padding: '10px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '20px' }}>
                 $ {parseFloat(packageData.shipping_cost || 0).toFixed(2)}
               </td>
             </tr>
             <tr style={{ backgroundColor: '#fff' }}>
-              <td style={{ padding: '12px', border: '2px solid #d1d5db', fontSize: '17px' }}>Clearance Cost</td>
-              <td style={{ padding: '12px', border: '2px solid #d1d5db' }}></td>
-              <td style={{ padding: '12px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '20px' }}>
+              <td style={{ padding: '10px', border: '2px solid #d1d5db', fontSize: '17px' }}>Clearance Cost</td>
+              <td style={{ padding: '10px', border: '2px solid #d1d5db' }}></td>
+              <td style={{ padding: '10px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '20px' }}>
                 $ {parseFloat(packageData.clearance_cost || 0).toFixed(2)}
               </td>
             </tr>
             <tr style={{ backgroundColor: '#dbeafe' }}>
-              <td style={{ padding: '12px', border: '2px solid #d1d5db', fontSize: '19px', fontWeight: 'bold' }}>TOTAL</td>
-              <td style={{ padding: '12px', border: '2px solid #d1d5db' }}></td>
-              <td style={{ padding: '12px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '24px', color: '#1e40af' }}>
+              <td style={{ padding: '10px', border: '2px solid #d1d5db', fontSize: '19px', fontWeight: 'bold' }}>TOTAL</td>
+              <td style={{ padding: '10px', border: '2px solid #d1d5db' }}></td>
+              <td style={{ padding: '10px', border: '2px solid #d1d5db', textAlign: 'right', fontWeight: 'bold', fontSize: '24px', color: '#1e40af' }}>
                 $ {totalCost.toFixed(2)}
               </td>
             </tr>
@@ -286,15 +286,15 @@ export default function Receipt({ packageData }) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          paddingTop: '12px',
+          paddingTop: '8px',
           borderTop: '2px solid #e5e7eb'
         }}>
           <div style={{ flex: 1 }}>
-            <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>Payment Methods:</h3>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              <div style={{ padding: '6px 10px', backgroundColor: '#1a1f71', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>VISA</div>
-              <div style={{ padding: '6px 10px', background: 'linear-gradient(90deg, #eb001b 0%, #f79e1b 100%)', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>Mastercard</div>
-              <div style={{ padding: '6px 10px', backgroundColor: '#003087', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>PayPal</div>
+            <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '6px' }}>Payment Methods:</h3>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              <div style={{ padding: '5px 8px', backgroundColor: '#1a1f71', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '11px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>VISA</div>
+              <div style={{ padding: '5px 8px', background: 'linear-gradient(90deg, #eb001b 0%, #f79e1b 100%)', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '11px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>Mastercard</div>
+              <div style={{ padding: '5px 8px', backgroundColor: '#003087', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '11px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>PayPal</div>
             </div>
           </div>
           <div style={{ 
@@ -305,16 +305,16 @@ export default function Receipt({ packageData }) {
             justifyContent: 'center'
           }}>
             <div style={{ 
-              fontSize: '13px', 
+              fontSize: '12px', 
               fontWeight: 'bold', 
-              marginBottom: '10px',
+              marginBottom: '6px',
               color: '#000'
             }}>
               Official Stamp/{formattedDate}
             </div>
             <div style={{
-              width: '150px',
-              height: '150px',
+              width: '100px',
+              height: '100px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -335,11 +335,11 @@ export default function Receipt({ packageData }) {
         {/* Company Footer - Compact */}
         <div style={{ 
           textAlign: 'center',
-          marginTop: '12px',
-          padding: '10px',
+          marginTop: '8px',
+          padding: '8px',
           backgroundColor: '#f8fafc',
           borderRadius: '6px',
-          fontSize: '14px',
+          fontSize: '13px',
           color: '#6b7280'
         }}>
           <strong>SwiftShip Express</strong> | 87 George Street DURHAM DH6 6YK<br/>
