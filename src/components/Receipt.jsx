@@ -42,6 +42,27 @@ export default function Receipt({ packageData }) {
         pointerEvents: 'none'
       }}></div>
 
+      {/* Certified True Copy Text Watermark */}
+      <div style={{
+        position: 'absolute',
+        top: '18%',
+        left: '15%',
+        transform: 'rotate(-50deg)',
+        pointerEvents: 'none',
+        zIndex: 10,
+        opacity: 0.5,
+        fontSize: '28px',
+        fontWeight: '400',
+        color: '#1f2937',
+        whiteSpace: 'nowrap',
+        letterSpacing: '2px',
+        fontFamily: 'Arial, sans-serif',
+        WebkitPrintColorAdjust: 'exact',
+        printColorAdjust: 'exact'
+      }}>
+        Certified True Copy
+      </div>
+
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 2 }}>
         {/* Header with Logo */}
@@ -271,17 +292,42 @@ export default function Receipt({ packageData }) {
           <div style={{ flex: 1 }}>
             <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>Payment Methods:</h3>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              <div style={{ padding: '6px 10px', backgroundColor: '#1a1f71', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px' }}>VISA</div>
-              <div style={{ padding: '6px 10px', background: 'linear-gradient(90deg, #eb001b 0%, #f79e1b 100%)', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px' }}>Mastercard</div>
-              <div style={{ padding: '6px 10px', backgroundColor: '#003087', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px' }}>PayPal</div>
+              <div style={{ padding: '6px 10px', backgroundColor: '#1a1f71', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>VISA</div>
+              <div style={{ padding: '6px 10px', background: 'linear-gradient(90deg, #eb001b 0%, #f79e1b 100%)', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>Mastercard</div>
+              <div style={{ padding: '6px 10px', backgroundColor: '#003087', color: '#fff', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px', WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>PayPal</div>
             </div>
           </div>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '13px', fontWeight: 'bold', marginBottom: '4px' }}>
-              Official Stamp
+          <div style={{ 
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <div style={{ 
+              fontSize: '13px', 
+              fontWeight: 'bold', 
+              marginBottom: '10px',
+              color: '#000'
+            }}>
+              Official Stamp/{formattedDate}
             </div>
-            <div style={{ fontSize: '12px', color: '#6b7280' }}>
-              {formattedDate}
+            <div style={{
+              width: '150px',
+              height: '150px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <img 
+                src="/watermark.png" 
+                alt="Official Stamp" 
+                style={{ 
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain'
+                }} 
+              />
             </div>
           </div>
         </div>
