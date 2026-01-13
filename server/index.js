@@ -11,6 +11,10 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
 
+console.log('Starting server initialization...')
+console.log('Environment:', process.env.NODE_ENV)
+console.log('Port:', PORT)
+
 // CORS configuration
 const corsOptions = {
   origin: [
@@ -26,7 +30,12 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 
-initDatabase()
+console.log('Initializing database...')
+initDatabase().then(() => {
+  console.log('Database initialized successfully')
+}).catch(err => {
+  console.error('Database initialization error:', err)
+})
 
 app.use('/api/auth', authRoutes)
 app.use('/api/packages', packageRoutes)
@@ -36,6 +45,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`)
+  console.log('Server is ready to accept connections')
 })
