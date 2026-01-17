@@ -239,7 +239,7 @@ export default function Tracking() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-400">Phone</p>
-                    <p className="font-semibold">+234 800 SWIFT</p>
+                    <p className="font-semibold">+1 (888) 794-3874</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
