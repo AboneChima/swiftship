@@ -560,7 +560,7 @@ export default function Admin() {
 
   const fetchPackages = async () => {
     try {
-      const res = await axios.get('/api/packages')
+      const res = await axios.get('/admin/packages')
       setPackages(res.data)
     } catch (err) {
       console.error(err)
@@ -569,7 +569,7 @@ export default function Admin() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('/api/admin/users')
+      const res = await axios.get('/admin/users')
       setUsers(res.data)
     } catch (err) {
       console.error(err)
@@ -580,9 +580,9 @@ export default function Admin() {
     e.preventDefault()
     try {
       if (editingPackage) {
-        await axios.put(`/api/packages/${editingPackage.id}`, formData)
+        await axios.put(`/admin/packages/${editingPackage.id}`, formData)
       } else {
-        await axios.post('/api/packages', formData)
+        await axios.post('/admin/packages', formData)
       }
       fetchPackages()
       resetForm()
@@ -622,7 +622,7 @@ export default function Admin() {
   const handleDelete = async (id) => {
     if (!confirm('Delete this package?')) return
     try {
-      await axios.delete(`/api/packages/${id}`)
+      await axios.delete(`/admin/packages/${id}`)
       fetchPackages()
     } catch (err) {
       alert('Error deleting package')
@@ -632,7 +632,7 @@ export default function Admin() {
   const handleDeleteUser = async (id, name) => {
     if (!confirm(`Are you sure you want to permanently delete user "${name}"? This action cannot be undone.`)) return
     try {
-      await axios.delete(`/api/admin/users/${id}`)
+      await axios.delete(`/admin/users/${id}`)
       fetchUsers()
       alert('User deleted successfully')
     } catch (err) {

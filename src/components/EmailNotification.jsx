@@ -57,7 +57,7 @@ export default function EmailNotification() {
         formData.append('attachment', attachment)
       }
 
-      await axios.post('/api/admin/send-email', formData, {
+      await axios.post('/admin/send-email', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

@@ -53,7 +53,7 @@ export default function Tracking() {
     setLoading(true)
 
     try {
-      const res = await axios.get(`/api/packages/track/${trackingNumber.trim()}`)
+      const res = await axios.get(`/packages/track?tracking=${trackingNumber.trim()}`)
       setResult(res.data)
     } catch (err) {
       setError(err.response?.data?.message || 'Package not found. Please check your tracking number.')

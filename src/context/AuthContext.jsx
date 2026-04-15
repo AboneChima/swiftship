@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get('/api/auth/me')
+      const res = await axios.get('/auth/me')
       setUser(res.data)
     } catch (err) {
       localStorage.removeItem('token')
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const login = async (email, password) => {
-    const res = await axios.post('/api/auth/login', { email, password })
+    const res = await axios.post('/auth/login', { email, password })
     localStorage.setItem('token', res.data.token)
     axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
     setUser(res.data.user)
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const signup = async (name, email, password) => {
-    const res = await axios.post('/api/auth/signup', { name, email, password })
+    const res = await axios.post('/auth/signup', { name, email, password })
     localStorage.setItem('token', res.data.token)
     axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
     setUser(res.data.user)

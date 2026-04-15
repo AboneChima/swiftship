@@ -25,7 +25,7 @@ export default function Dashboard() {
 
   const fetchPackages = async () => {
     try {
-      const res = await axios.get('/api/packages/my-packages')
+      const res = await axios.get('/packages/my-packages')
       setPackages(res.data)
       
       const total = res.data.length
@@ -43,7 +43,7 @@ export default function Dashboard() {
 
   const viewDetails = async (pkg) => {
     try {
-      const res = await axios.get(`/api/packages/track/${pkg.tracking_number}`)
+      const res = await axios.get(`/packages/track/${pkg.tracking_number}`)
       setSelectedPackage(res.data)
     } catch (err) {
       console.error(err)
