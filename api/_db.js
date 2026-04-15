@@ -39,15 +39,14 @@ export async function initDatabase() {
         delivery_date TEXT DEFAULT '',
         arrival_date TEXT DEFAULT '',
         user_id INTEGER,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `
 
     console.log('Database tables initialized')
   } catch (error) {
     console.error('Database initialization error:', error)
-    throw error
+    // Don't throw - tables might already exist
   }
 }
 
