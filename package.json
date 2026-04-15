@@ -10,7 +10,9 @@
     "migrate": "node server/migrate.js",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma generate && vite build"
   },
   "dependencies": {
     "@getbrevo/brevo": "^3.0.1",
