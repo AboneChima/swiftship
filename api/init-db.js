@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres'
+import { neon } from '@neondatabase/serverless'
 import bcrypt from 'bcryptjs'
 
 export default async function handler(req, res) {
@@ -16,6 +16,8 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' })
   }
+
+  const sql = neon(process.env.POSTGRES_URL || process.env.DATABASE_URL)
 
   try {
     // Create users table
@@ -55,15 +57,14 @@ export default async function handler(req, res) {
         delivery_date TEXT DEFAULT '',
         arrival_date TEXT DEFAULT '',
         user_id INTEGER,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `
 
     // Check if admin exists
     const adminCheck = await sql`SELECT * FROM users WHERE email = 'admin@swiftship.com'`
     
-    if (adminCheck.rows.length === 0) {
+    if (adminCheck.length === 0) {
       // Create default admin user
       const hashedPassword = bcrypt.hashSync('admin123', 10)
       await sql`
