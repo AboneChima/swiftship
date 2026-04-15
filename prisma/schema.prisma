@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      String    @default("user")
+  createdAt DateTime  @default(now()) @map("created_at")
+  packages  Package[]
+
+  @@map("users")
+}
+
+model Package {
+  id              Int      @id @default(autoincrement())
+  trackingNumber  String   @unique @map("tracking_number")
+  senderName      String   @map("sender_name")
+  senderPhone     String   @default("") @map("sender_phone")
+  senderId        String   @default("") @map("sender_id")
+  senderEmail     String   @default("") @map("sender_email")
+  senderCountry   String   @default("") @map("sender_country")
+  senderLocation  String   @map("sender_location")
+  receiverName    String   @map("receiver_name")
+  receiverPhone   String   @default("") @map("receiver_phone")
+  receiverEmail   String   @default("") @map("receiver_email")
+  receiverCountry String   @default("") @map("receiver_country")
+  receiverLocation String  @map("receiver_location")
+  productName     String   @default("") @map("product_name")
+  weight          Float
+  status          String   @default("pending")
+  shippingCost    Float    @default(0) @map("shipping_cost")
+  clearanceCost   Float    @default(0) @map("clearance_cost")
+  collectionDate  String   @default("") @map("collection_date")
+  deliveryDate    String   @default("") @map("delivery_date")
+  arrivalDate     String   @default("") @map("arrival_date")
+  userId          Int?     @map("user_id")
+  user            User?    @relation(fields: [userId], references: [id])
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@map("packages")
+}

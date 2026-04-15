@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { sql } from '../_db.js'
+import prisma from '../_prisma.js'
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -25,13 +25,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    const result = await sql`SELECT * FROM users WHERE email = ${email}`
+    const user = await prisma.user.findUnique({
+      where: { email }
+    })
     
-    if (result.rows.length === 0) {
+    if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' })
     }
 
-    const user = result.rows[0]
     const validPassword = bcrypt.compareSync(password, user.password)
     
     if (!validPassword) {
