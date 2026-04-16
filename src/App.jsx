@@ -22,23 +22,6 @@ function HomeRedirect() {
 }
 
 function App() {
-  // Maintenance mode check
-  const isMaintenanceMode = import.meta.env.VITE_MAINTENANCE_MODE === 'true'
-
-  if (isMaintenanceMode) {
-    return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="text-6xl mb-4">🚧</div>
-          <h1 className="text-3xl font-bold text-white mb-4">Site Under Maintenance</h1>
-          <p className="text-gray-400 text-lg">
-            We'll be back soon. Thank you for your patience.
-          </p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <AuthProvider>
       <Router>
