@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { sql } from '../../_db.js'
+import prisma from '../../_prisma.js'
 
 async function authenticateAdmin(req) {
   const authHeader = req.headers.authorization
@@ -10,13 +10,16 @@ async function authenticateAdmin(req) {
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key')
-  const result = await sql`SELECT id, name, email, role FROM users WHERE id = ${decoded.userId}`
+  const user = await prisma.user.findUnique({
+    where: { id: decoded.userId },
+    select: { id: true, name: true, email: true, role: true }
+  })
 
-  if (result.rows.length === 0 || result.rows[0].role !== 'admin') {
+  if (!user || user.role !== 'admin') {
     throw new Error('Unauthorized')
   }
 
-  return result.rows[0]
+  return user
 }
 
 export default async function handler(req, res) {
@@ -43,52 +46,51 @@ export default async function handler(req, res) {
     const updates = req.body
 
     try {
-      const result = await sql`
-        UPDATE packages 
-        SET 
-          sender_name = ${updates.sender_name},
-          sender_phone = ${updates.sender_phone || ''},
-          sender_id = ${updates.sender_id || ''},
-          sender_email = ${updates.sender_email || ''},
-          sender_country = ${updates.sender_country || ''},
-          sender_location = ${updates.sender_location},
-          receiver_name = ${updates.receiver_name},
-          receiver_phone = ${updates.receiver_phone || ''},
-          receiver_email = ${updates.receiver_email || ''},
-          receiver_country = ${updates.receiver_country || ''},
-          receiver_location = ${updates.receiver_location},
-          product_name = ${updates.product_name || ''},
-          weight = ${updates.weight},
-          status = ${updates.status},
-          shipping_cost = ${updates.shipping_cost || 0},
-          clearance_cost = ${updates.clearance_cost || 0},
-          collection_date = ${updates.collection_date || ''},
-          delivery_date = ${updates.delivery_date || ''},
-          arrival_date = ${updates.arrival_date || ''}
-        WHERE id = ${id}
-        RETURNING *
-      `
+      const pkg = await prisma.package.update({
+        where: { id: parseInt(id) },
+        data: {
+          senderName: updates.sender_name,
+          senderPhone: updates.sender_phone || '',
+          senderId: updates.sender_id || '',
+          senderEmail: updates.sender_email || '',
+          senderCountry: updates.sender_country || '',
+          senderLocation: updates.sender_location,
+          receiverName: updates.receiver_name,
+          receiverPhone: updates.receiver_phone || '',
+          receiverEmail: updates.receiver_email || '',
+          receiverCountry: updates.receiver_country || '',
+          receiverLocation: updates.receiver_location,
+          productName: updates.product_name || '',
+          weight: parseFloat(updates.weight),
+          status: updates.status,
+          shippingCost: parseFloat(updates.shipping_cost) || 0,
+          clearanceCost: parseFloat(updates.clearance_cost) || 0,
+          collectionDate: updates.collection_date || '',
+          deliveryDate: updates.delivery_date || '',
+          arrivalDate: updates.arrival_date || ''
+        }
+      })
 
-      if (result.rows.length === 0) {
-        return res.status(404).json({ message: 'Package not found' })
-      }
-
-      res.status(200).json(result.rows[0])
+      res.status(200).json(pkg)
     } catch (err) {
       console.error('Update package error:', err)
+      if (err.code === 'P2025') {
+        return res.status(404).json({ message: 'Package not found' })
+      }
       res.status(500).json({ message: 'Server error' })
     }
   } else if (req.method === 'DELETE') {
     try {
-      const result = await sql`DELETE FROM packages WHERE id = ${id} RETURNING *`
-
-      if (result.rows.length === 0) {
-        return res.status(404).json({ message: 'Package not found' })
-      }
+      await prisma.package.delete({
+        where: { id: parseInt(id) }
+      })
 
       res.status(200).json({ message: 'Package deleted' })
     } catch (err) {
       console.error('Delete package error:', err)
+      if (err.code === 'P2025') {
+        return res.status(404).json({ message: 'Package not found' })
+      }
       res.status(500).json({ message: 'Server error' })
     }
   } else {

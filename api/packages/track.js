@@ -1,4 +1,4 @@
-import { sql } from '../_db.js'
+import prisma from '../_prisma.js'
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -23,16 +23,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    const result = await sql`
-      SELECT * FROM packages 
-      WHERE LOWER(tracking_number) = LOWER(${tracking})
-    `
+    const pkg = await prisma.package.findFirst({
+      where: {
+        trackingNumber: {
+          equals: tracking,
+          mode: 'insensitive'
+        }
+      }
+    })
 
-    if (result.rows.length === 0) {
+    if (!pkg) {
       return res.status(404).json({ message: 'Package not found' })
     }
 
-    res.status(200).json(result.rows[0])
+    res.status(200).json(pkg)
   } catch (err) {
     console.error('Track error:', err)
     res.status(500).json({ message: 'Server error' })

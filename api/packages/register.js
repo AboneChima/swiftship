@@ -1,4 +1,4 @@
-import { sql } from '../_db.js'
+import prisma from '../_prisma.js'
 
 function generateTrackingNumber() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -53,22 +53,32 @@ export default async function handler(req, res) {
   try {
     const tracking_number = generateTrackingNumber()
 
-    const result = await sql`
-      INSERT INTO packages (
-        tracking_number, sender_name, sender_phone, sender_id, sender_email, sender_country,
-        sender_location, receiver_name, receiver_phone, receiver_email, receiver_country,
-        receiver_location, product_name, weight, shipping_cost, clearance_cost,
-        collection_date, delivery_date, arrival_date, status
-      ) VALUES (
-        ${tracking_number}, ${sender_name}, ${sender_phone}, ${sender_id}, ${sender_email}, 
-        ${sender_country}, ${sender_location}, ${receiver_name}, ${receiver_phone}, 
-        ${receiver_email}, ${receiver_country}, ${receiver_location}, ${product_name}, 
-        ${weight}, ${shipping_cost}, ${clearance_cost}, ${collection_date}, ${delivery_date}, 
-        ${arrival_date}, 'pending'
-      ) RETURNING *
-    `
+    const pkg = await prisma.package.create({
+      data: {
+        trackingNumber: tracking_number,
+        senderName: sender_name,
+        senderPhone: sender_phone,
+        senderId: sender_id,
+        senderEmail: sender_email,
+        senderCountry: sender_country,
+        senderLocation: sender_location,
+        receiverName: receiver_name,
+        receiverPhone: receiver_phone,
+        receiverEmail: receiver_email,
+        receiverCountry: receiver_country,
+        receiverLocation: receiver_location,
+        productName: product_name,
+        weight: parseFloat(weight),
+        shippingCost: parseFloat(shipping_cost),
+        clearanceCost: parseFloat(clearance_cost),
+        collectionDate: collection_date,
+        deliveryDate: delivery_date,
+        arrivalDate: arrival_date,
+        status: 'pending'
+      }
+    })
 
-    res.status(201).json(result.rows[0])
+    res.status(201).json(pkg)
   } catch (err) {
     console.error('Register package error:', err)
     res.status(500).json({ message: 'Server error' })

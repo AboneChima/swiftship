@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { sql } from '../_db.js'
+import prisma from '../_prisma.js'
 
 async function authenticateAdmin(req) {
   const authHeader = req.headers.authorization
@@ -10,13 +10,16 @@ async function authenticateAdmin(req) {
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key')
-  const result = await sql`SELECT id, name, email, role FROM users WHERE id = ${decoded.userId}`
+  const user = await prisma.user.findUnique({
+    where: { id: decoded.userId },
+    select: { id: true, name: true, email: true, role: true }
+  })
 
-  if (result.rows.length === 0 || result.rows[0].role !== 'admin') {
+  if (!user || user.role !== 'admin') {
     throw new Error('Unauthorized')
   }
 
-  return result.rows[0]
+  return user
 }
 
 export default async function handler(req, res) {
@@ -39,8 +42,10 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
-      const result = await sql`SELECT * FROM packages ORDER BY created_at DESC`
-      res.status(200).json(result.rows)
+      const packages = await prisma.package.findMany({
+        orderBy: { createdAt: 'desc' }
+      })
+      res.status(200).json(packages)
     } catch (err) {
       console.error('Get packages error:', err)
       res.status(500).json({ message: 'Server error' })
@@ -75,22 +80,32 @@ export default async function handler(req, res) {
     try {
       const tracking_number = 'TRK' + Date.now() + Math.random().toString(36).substr(2, 9).toUpperCase()
 
-      const result = await sql`
-        INSERT INTO packages (
-          tracking_number, sender_name, sender_phone, sender_id, sender_email, sender_country,
-          sender_location, receiver_name, receiver_phone, receiver_email, receiver_country,
-          receiver_location, product_name, weight, status, shipping_cost, clearance_cost,
-          collection_date, delivery_date, arrival_date
-        ) VALUES (
-          ${tracking_number}, ${sender_name}, ${sender_phone}, ${sender_id}, ${sender_email}, 
-          ${sender_country}, ${sender_location}, ${receiver_name}, ${receiver_phone}, 
-          ${receiver_email}, ${receiver_country}, ${receiver_location}, ${product_name}, 
-          ${weight}, ${status}, ${shipping_cost}, ${clearance_cost}, ${collection_date}, 
-          ${delivery_date}, ${arrival_date}
-        ) RETURNING *
-      `
+      const pkg = await prisma.package.create({
+        data: {
+          trackingNumber: tracking_number,
+          senderName: sender_name,
+          senderPhone: sender_phone,
+          senderId: sender_id,
+          senderEmail: sender_email,
+          senderCountry: sender_country,
+          senderLocation: sender_location,
+          receiverName: receiver_name,
+          receiverPhone: receiver_phone,
+          receiverEmail: receiver_email,
+          receiverCountry: receiver_country,
+          receiverLocation: receiver_location,
+          productName: product_name,
+          weight: parseFloat(weight),
+          status,
+          shippingCost: parseFloat(shipping_cost),
+          clearanceCost: parseFloat(clearance_cost),
+          collectionDate: collection_date,
+          deliveryDate: delivery_date,
+          arrivalDate: arrival_date
+        }
+      })
 
-      res.status(201).json(result.rows[0])
+      res.status(201).json(pkg)
     } catch (err) {
       console.error('Create package error:', err)
       res.status(500).json({ message: 'Server error' })

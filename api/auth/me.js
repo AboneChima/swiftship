@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { sql } from '../_db.js'
+import prisma from '../_prisma.js'
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -26,13 +26,16 @@ export default async function handler(req, res) {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key')
-    const result = await sql`SELECT id, name, email, role FROM users WHERE id = ${decoded.userId}`
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId },
+      select: { id: true, name: true, email: true, role: true }
+    })
 
-    if (result.rows.length === 0) {
+    if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    res.status(200).json(result.rows[0])
+    res.status(200).json(user)
   } catch (err) {
     console.error('Auth error:', err)
     res.status(401).json({ message: 'Invalid token' })
