@@ -580,7 +580,7 @@ export default function Admin() {
     e.preventDefault()
     try {
       if (editingPackage) {
-        await axios.put(`/admin/packages/${editingPackage.id}`, formData)
+        await axios.put(`/admin/packages?id=${editingPackage.id}`, formData)
       } else {
         await axios.post('/admin/packages', formData)
       }
@@ -622,7 +622,7 @@ export default function Admin() {
   const handleDelete = async (id) => {
     if (!confirm('Delete this package?')) return
     try {
-      await axios.delete(`/admin/packages/${id}`)
+      await axios.delete(`/admin/packages?id=${id}`)
       fetchPackages()
     } catch (err) {
       alert('Error deleting package')

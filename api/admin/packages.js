@@ -40,6 +40,7 @@ export default async function handler(req, res) {
     return res.status(401).json({ message: err.message })
   }
 
+  // Handle GET - list all packages
   if (req.method === 'GET') {
     try {
       const packages = await prisma.package.findMany({
@@ -50,7 +51,9 @@ export default async function handler(req, res) {
       console.error('Get packages error:', err)
       res.status(500).json({ message: 'Server error' })
     }
-  } else if (req.method === 'POST') {
+  } 
+  // Handle POST - create new package
+  else if (req.method === 'POST') {
     const {
       sender_name,
       sender_phone = '',
@@ -111,7 +114,74 @@ export default async function handler(req, res) {
       console.error('Error details:', err.message, err.stack)
       res.status(500).json({ message: 'Server error', error: err.message })
     }
-  } else {
+  }
+  // Handle PUT - update package
+  else if (req.method === 'PUT') {
+    const { id } = req.query
+    const updates = req.body
+
+    if (!id) {
+      return res.status(400).json({ message: 'Package ID required' })
+    }
+
+    try {
+      const pkg = await prisma.package.update({
+        where: { id: parseInt(id) },
+        data: {
+          senderName: updates.sender_name,
+          senderPhone: updates.sender_phone || '',
+          senderId: updates.sender_id || '',
+          senderEmail: updates.sender_email || '',
+          senderCountry: updates.sender_country || '',
+          senderLocation: updates.sender_location,
+          receiverName: updates.receiver_name,
+          receiverPhone: updates.receiver_phone || '',
+          receiverEmail: updates.receiver_email || '',
+          receiverCountry: updates.receiver_country || '',
+          receiverLocation: updates.receiver_location,
+          productName: updates.product_name || '',
+          weight: parseFloat(updates.weight),
+          status: updates.status,
+          shippingCost: parseFloat(updates.shipping_cost) || 0,
+          clearanceCost: parseFloat(updates.clearance_cost) || 0,
+          collectionDate: updates.collection_date || '',
+          deliveryDate: updates.delivery_date || '',
+          arrivalDate: updates.arrival_date || ''
+        }
+      })
+
+      res.status(200).json(pkg)
+    } catch (err) {
+      console.error('Update package error:', err)
+      if (err.code === 'P2025') {
+        return res.status(404).json({ message: 'Package not found' })
+      }
+      res.status(500).json({ message: 'Server error' })
+    }
+  }
+  // Handle DELETE - delete package
+  else if (req.method === 'DELETE') {
+    const { id } = req.query
+
+    if (!id) {
+      return res.status(400).json({ message: 'Package ID required' })
+    }
+
+    try {
+      await prisma.package.delete({
+        where: { id: parseInt(id) }
+      })
+
+      res.status(200).json({ message: 'Package deleted' })
+    } catch (err) {
+      console.error('Delete package error:', err)
+      if (err.code === 'P2025') {
+        return res.status(404).json({ message: 'Package not found' })
+      }
+      res.status(500).json({ message: 'Server error' })
+    }
+  }
+  else {
     res.status(405).json({ message: 'Method not allowed' })
   }
 }
