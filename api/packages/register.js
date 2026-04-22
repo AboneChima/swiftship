@@ -9,6 +9,35 @@ function generateTrackingNumber() {
   return result
 }
 
+// Convert Prisma camelCase to snake_case for frontend
+function toSnakeCase(pkg) {
+  return {
+    id: pkg.id,
+    tracking_number: pkg.trackingNumber,
+    sender_name: pkg.senderName,
+    sender_phone: pkg.senderPhone,
+    sender_id: pkg.senderId,
+    sender_email: pkg.senderEmail,
+    sender_country: pkg.senderCountry,
+    sender_location: pkg.senderLocation,
+    receiver_name: pkg.receiverName,
+    receiver_phone: pkg.receiverPhone,
+    receiver_email: pkg.receiverEmail,
+    receiver_country: pkg.receiverCountry,
+    receiver_location: pkg.receiverLocation,
+    product_name: pkg.productName,
+    weight: pkg.weight,
+    status: pkg.status,
+    shipping_cost: pkg.shippingCost,
+    clearance_cost: pkg.clearanceCost,
+    collection_date: pkg.collectionDate,
+    delivery_date: pkg.deliveryDate,
+    arrival_date: pkg.arrivalDate,
+    user_id: pkg.userId,
+    created_at: pkg.createdAt
+  }
+}
+
 export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true')
@@ -78,7 +107,7 @@ export default async function handler(req, res) {
       }
     })
 
-    res.status(201).json(pkg)
+    res.status(201).json(toSnakeCase(pkg))
   } catch (err) {
     console.error('Register package error:', err)
     res.status(500).json({ message: 'Server error' })
