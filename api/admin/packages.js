@@ -108,7 +108,8 @@ export default async function handler(req, res) {
       res.status(201).json(pkg)
     } catch (err) {
       console.error('Create package error:', err)
-      res.status(500).json({ message: 'Server error' })
+      console.error('Error details:', err.message, err.stack)
+      res.status(500).json({ message: 'Server error', error: err.message })
     }
   } else {
     res.status(405).json({ message: 'Method not allowed' })
