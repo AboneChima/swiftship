@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import prisma from '../_prisma.js'
+import { sendPackageRegistrationEmail } from '../_emailService.js'
 
 async function authenticateAdmin(req) {
   const authHeader = req.headers.authorization
@@ -136,6 +137,13 @@ export default async function handler(req, res) {
           arrivalDate: arrival_date
         }
       })
+
+      // Send email notification (don't wait for it)
+      if (pkg.receiverEmail) {
+        sendPackageRegistrationEmail(toSnakeCase(pkg)).catch(err => {
+          console.error('Failed to send email:', err)
+        })
+      }
 
       res.status(201).json(toSnakeCase(pkg))
     } catch (err) {
