@@ -93,11 +93,7 @@ export default async function handler(req, res) {
     return res.status(401).json({ message: err.message })
   }
 
-  // Get data from body (Vercel automatically parses it)
-  const email = req.body.recipientEmail
-  const name = req.body.recipientName
-  const subject = req.body.subject
-  const message = req.body.message
+  const { email, name, subject, message } = req.body || {}
 
   if (!email || !subject || !message) {
     return res.status(400).json({ message: 'Email, subject, and message are required' })

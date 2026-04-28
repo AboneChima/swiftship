@@ -48,19 +48,11 @@ export default function EmailNotification() {
     setSuccess(false)
 
     try {
-      const formData = new FormData()
-      formData.append('recipientEmail', recipientEmail)
-      formData.append('recipientName', recipientName)
-      formData.append('subject', subject)
-      formData.append('message', message)
-      if (attachment) {
-        formData.append('attachment', attachment)
-      }
-
-      await axios.post('/admin/send-email', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+      await axios.post('/admin/send-email', {
+        email: recipientEmail,
+        name: recipientName,
+        subject: subject,
+        message: message
       })
       
       setSuccess(true)
