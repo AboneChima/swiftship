@@ -493,7 +493,6 @@ const statusConfig = {
 
 export default function Admin() {
   const [packages, setPackages] = useState([])
-  const [users, setUsers] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [editingPackage, setEditingPackage] = useState(null)
   const [activeTab, setActiveTab] = useState('packages')
@@ -549,7 +548,6 @@ export default function Admin() {
 
   useEffect(() => {
     fetchPackages()
-    fetchUsers()
   }, [])
 
   useEffect(() => {
@@ -562,15 +560,6 @@ export default function Admin() {
     try {
       const res = await axios.get('/admin/packages')
       setPackages(res.data)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const fetchUsers = async () => {
-    try {
-      const res = await axios.get('/admin/users')
-      setUsers(res.data)
     } catch (err) {
       console.error(err)
     }
@@ -629,16 +618,7 @@ export default function Admin() {
     }
   }
 
-  const handleDeleteUser = async (id, name) => {
-    if (!confirm(`Are you sure you want to permanently delete user "${name}"? This action cannot be undone.`)) return
-    try {
-      await axios.delete(`/admin/users/${id}`)
-      fetchUsers()
-      alert('User deleted successfully')
-    } catch (err) {
-      alert(err.response?.data?.message || 'Error deleting user')
-    }
-  }
+
 
   const resetForm = () => {
     setFormData({
@@ -670,7 +650,6 @@ export default function Admin() {
 
   const stats = {
     totalPackages: packages.length,
-    totalUsers: users.length,
     delivered: packages.filter(p => p.status === 'delivered').length,
     inTransit: packages.filter(p => p.status === 'in_transit' || p.status === 'out_for_delivery').length
   }
@@ -678,84 +657,109 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-dark-bg">
       <div className="w-full px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-12">
-        {/* Header */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">Admin Dashboard</h1>
-          <p className="text-gray-400 text-sm sm:text-base lg:text-lg">Manage packages and users</p>
-        </div>
-
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-dark-card border border-dark-border rounded-xl p-4 sm:p-6">
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <FiPackage className="text-accent-primary text-2xl sm:text-3xl" />
-              <span className="text-2xl sm:text-3xl font-bold text-white">{stats.totalPackages}</span>
+        {/* Modern Glassmorphism Header */}
+        <div className="mb-8 backdrop-blur-xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl">
+          <div className="flex items-center gap-4 mb-2">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+              <FiPackage className="text-white text-2xl" />
             </div>
-            <p className="text-gray-400 text-sm sm:text-base">Total Packages</p>
-          </div>
-          <div className="bg-dark-card border border-dark-border rounded-xl p-4 sm:p-6">
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <FiUsers className="text-purple-400 text-2xl sm:text-3xl" />
-              <span className="text-2xl sm:text-3xl font-bold text-white">{stats.totalUsers}</span>
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Admin Dashboard
+              </h1>
+              <p className="text-gray-400 text-sm sm:text-base mt-1">Manage your shipments and notifications</p>
             </div>
-            <p className="text-gray-400 text-sm sm:text-base">Total Users</p>
-          </div>
-          <div className="bg-dark-card border border-dark-border rounded-xl p-4 sm:p-6">
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <FiCheckCircle className="text-green-400 text-2xl sm:text-3xl" />
-              <span className="text-2xl sm:text-3xl font-bold text-white">{stats.delivered}</span>
-            </div>
-            <p className="text-gray-400 text-sm sm:text-base">Delivered</p>
-          </div>
-          <div className="bg-dark-card border border-dark-border rounded-xl p-4 sm:p-6">
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <FiTruck className="text-orange-400 text-2xl sm:text-3xl" />
-              <span className="text-2xl sm:text-3xl font-bold text-white">{stats.inTransit}</span>
-            </div>
-            <p className="text-gray-400 text-sm sm:text-base">In Transit</p>
           </div>
         </div>
 
-        {/* Tabs and Add Button - Combined Row on Mobile */}
+        {/* Modern Stats Cards with Glassmorphism */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
+          {/* Total Packages Card */}
+          <div className="group relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-blue-500/20">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all"></div>
+            <div className="relative">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg">
+                  <FiBox className="text-white text-2xl" />
+                </div>
+                <span className="text-4xl sm:text-5xl font-bold bg-gradient-to-br from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                  {stats.totalPackages}
+                </span>
+              </div>
+              <p className="text-gray-300 font-semibold text-base">Total Packages</p>
+              <p className="text-gray-500 text-sm mt-1">All shipments</p>
+            </div>
+          </div>
+
+          {/* Delivered Card */}
+          <div className="group relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-green-500/20">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl group-hover:bg-green-500/20 transition-all"></div>
+            <div className="relative">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg">
+                  <FiCheckCircle className="text-white text-2xl" />
+                </div>
+                <span className="text-4xl sm:text-5xl font-bold bg-gradient-to-br from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                  {stats.delivered}
+                </span>
+              </div>
+              <p className="text-gray-300 font-semibold text-base">Delivered</p>
+              <p className="text-gray-500 text-sm mt-1">Successfully delivered</p>
+            </div>
+          </div>
+
+          {/* In Transit Card */}
+          <div className="group relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-500/20 rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-orange-500/20">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl group-hover:bg-orange-500/20 transition-all"></div>
+            <div className="relative">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg">
+                  <FiTruck className="text-white text-2xl" />
+                </div>
+                <span className="text-4xl sm:text-5xl font-bold bg-gradient-to-br from-orange-400 to-amber-400 bg-clip-text text-transparent">
+                  {stats.inTransit}
+                </span>
+              </div>
+              <p className="text-gray-300 font-semibold text-base">In Transit</p>
+              <p className="text-gray-500 text-sm mt-1">On the way</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Tabs and Add Button */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
           <div className="flex gap-3 flex-1">
             <button
               onClick={() => setActiveTab('packages')}
-              className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base ${
-                activeTab === 'packages' ? 'bg-accent-primary text-white' : 'bg-dark-card text-gray-400 border border-dark-border hover:text-white'
+              className={`flex-1 sm:flex-none px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
+                activeTab === 'packages' 
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/30' 
+                  : 'backdrop-blur-xl bg-white/5 text-gray-400 border border-white/10 hover:text-white hover:bg-white/10'
               }`}
             >
-              <FiPackage />
-              <span className="hidden xs:inline">Packages</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('users')}
-              className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base ${
-                activeTab === 'users' ? 'bg-accent-primary text-white' : 'bg-dark-card text-gray-400 border border-dark-border hover:text-white'
-              }`}
-            >
-              <FiUsers />
-              <span className="hidden xs:inline">Users</span>
+              <FiPackage className="text-lg" />
+              <span>Packages</span>
             </button>
             <button
               onClick={() => setActiveTab('email')}
-              className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base ${
-                activeTab === 'email' ? 'bg-accent-primary text-white' : 'bg-dark-card text-gray-400 border border-dark-border hover:text-white'
+              className={`flex-1 sm:flex-none px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
+                activeTab === 'email' 
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/30' 
+                  : 'backdrop-blur-xl bg-white/5 text-gray-400 border border-white/10 hover:text-white hover:bg-white/10'
               }`}
             >
-              <FiMail />
-              <span className="hidden xs:inline">Email</span>
+              <FiMail className="text-lg" />
+              <span>Email</span>
             </button>
           </div>
           
           {activeTab === 'packages' && (
             <button
               onClick={() => setShowForm(!showForm)}
-              className="bg-accent-primary hover:bg-blue-600 text-white px-4 sm:px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base whitespace-nowrap"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
             >
-              {showForm ? <FiX /> : <FiPlus />}
-              <span className="hidden xs:inline">{showForm ? 'Cancel' : 'Add Package'}</span>
-              <span className="xs:hidden">{showForm ? 'Cancel' : 'Add'}</span>
+              {showForm ? <FiX className="text-lg" /> : <FiPlus className="text-lg" />}
+              <span>{showForm ? 'Cancel' : 'Add Package'}</span>
             </button>
           )}
         </div>
@@ -867,86 +871,6 @@ export default function Admin() {
                         </tr>
                       )
                     })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </>
-        )}
-
-        {activeTab === 'users' && (
-          <>
-            {/* Mobile Card View */}
-            <div className="block lg:hidden space-y-3">
-              {users.map((user) => (
-                <div key={user.id} className="bg-dark-card border border-dark-border rounded-xl p-3 sm:p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex-1 min-w-0 pr-2">
-                      <p className="text-white font-semibold text-sm sm:text-base mb-1 truncate">{user.name}</p>
-                      <p className="text-gray-400 text-xs sm:text-sm truncate">{user.email}</p>
-                    </div>
-                    <span className={`px-2 sm:px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap ${
-                      user.role === 'admin' ? 'bg-purple-500/10 text-purple-400' : 'bg-gray-500/10 text-gray-400'
-                    }`}>
-                      {user.role}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 border-t border-dark-border">
-                    <p className="text-gray-400 text-xs">Joined: {new Date(user.created_at).toLocaleDateString()}</p>
-                    {user.role !== 'admin' && (
-                      <button 
-                        onClick={() => handleDeleteUser(user.id, user.name)}
-                        className="bg-red-500/10 text-red-400 hover:bg-red-500/20 px-3 py-1 rounded-lg transition flex items-center gap-1 text-xs"
-                      >
-                        <FiTrash2 size={12} />
-                        Delete
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Desktop Table View */}
-            <div className="hidden lg:block bg-dark-card border border-dark-border rounded-xl overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-dark-bg border-b border-dark-border">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Name</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Email</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Role</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Joined</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.map((user) => (
-                      <tr key={user.id} className="border-b border-dark-border hover:bg-dark-bg transition">
-                        <td className="px-6 py-4 text-white">{user.name}</td>
-                        <td className="px-6 py-4 text-gray-300">{user.email}</td>
-                        <td className="px-6 py-4">
-                          <span className={`px-3 py-1 rounded-lg text-sm font-semibold ${
-                            user.role === 'admin' ? 'bg-purple-500/10 text-purple-400' : 'bg-gray-500/10 text-gray-400'
-                          }`}>
-                            {user.role}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-gray-400">{new Date(user.created_at).toLocaleDateString()}</td>
-                        <td className="px-6 py-4">
-                          {user.role !== 'admin' ? (
-                            <button 
-                              onClick={() => handleDeleteUser(user.id, user.name)}
-                              className="text-red-400 hover:text-red-300 transition"
-                            >
-                              <FiTrash2 />
-                            </button>
-                          ) : (
-                            <span className="text-gray-600">-</span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
                   </tbody>
                 </table>
               </div>
