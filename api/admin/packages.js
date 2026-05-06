@@ -140,9 +140,12 @@ export default async function handler(req, res) {
 
       // Send email notification (don't wait for it)
       if (pkg.receiverEmail) {
+        console.log('Sending email notification to receiver:', pkg.receiverEmail)
         sendPackageRegistrationEmail(toSnakeCase(pkg)).catch(err => {
           console.error('Failed to send email:', err)
         })
+      } else {
+        console.log('No receiver email provided, skipping email notification')
       }
 
       res.status(201).json(toSnakeCase(pkg))
@@ -186,6 +189,14 @@ export default async function handler(req, res) {
           arrivalDate: updates.arrival_date || ''
         }
       })
+
+      // Send email notification on update if receiver email exists
+      if (pkg.receiverEmail) {
+        console.log('Sending email notification to updated receiver:', pkg.receiverEmail)
+        sendPackageRegistrationEmail(toSnakeCase(pkg)).catch(err => {
+          console.error('Failed to send email on update:', err)
+        })
+      }
 
       res.status(200).json(toSnakeCase(pkg))
     } catch (err) {
