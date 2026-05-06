@@ -655,122 +655,95 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen bg-dark-bg">
-      <div className="w-full px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-12">
-        {/* Modern Glassmorphism Header */}
-        <div className="mb-8 backdrop-blur-xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl">
-          <div className="flex items-center gap-4 mb-2">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
-              <FiPackage className="text-white text-2xl" />
+    <div className="min-h-screen bg-[#0a0a0a]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        {/* Simple Header */}
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold text-white mb-1">Admin Dashboard</h1>
+          <p className="text-sm text-gray-500">Manage shipments and notifications</p>
+        </div>
+
+        {/* Clean Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div className="bg-[#111] border border-gray-800 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Total Packages</p>
+                <p className="text-2xl font-semibold text-white">{stats.totalPackages}</p>
+              </div>
+              <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                <FiBox className="text-blue-500 text-lg" />
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Admin Dashboard
-              </h1>
-              <p className="text-gray-400 text-sm sm:text-base mt-1">Manage your shipments and notifications</p>
+          </div>
+
+          <div className="bg-[#111] border border-gray-800 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Delivered</p>
+                <p className="text-2xl font-semibold text-white">{stats.delivered}</p>
+              </div>
+              <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                <FiCheckCircle className="text-green-500 text-lg" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-[#111] border border-gray-800 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-500 mb-1">In Transit</p>
+                <p className="text-2xl font-semibold text-white">{stats.inTransit}</p>
+              </div>
+              <div className="w-10 h-10 bg-orange-500/10 rounded-lg flex items-center justify-center">
+                <FiTruck className="text-orange-500 text-lg" />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Modern Stats Cards with Glassmorphism */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
-          {/* Total Packages Card */}
-          <div className="group relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-blue-500/20">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all"></div>
-            <div className="relative">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg">
-                  <FiBox className="text-white text-2xl" />
-                </div>
-                <span className="text-4xl sm:text-5xl font-bold bg-gradient-to-br from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                  {stats.totalPackages}
-                </span>
-              </div>
-              <p className="text-gray-300 font-semibold text-base">Total Packages</p>
-              <p className="text-gray-500 text-sm mt-1">All shipments</p>
-            </div>
-          </div>
-
-          {/* Delivered Card */}
-          <div className="group relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-green-500/20">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl group-hover:bg-green-500/20 transition-all"></div>
-            <div className="relative">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg">
-                  <FiCheckCircle className="text-white text-2xl" />
-                </div>
-                <span className="text-4xl sm:text-5xl font-bold bg-gradient-to-br from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                  {stats.delivered}
-                </span>
-              </div>
-              <p className="text-gray-300 font-semibold text-base">Delivered</p>
-              <p className="text-gray-500 text-sm mt-1">Successfully delivered</p>
-            </div>
-          </div>
-
-          {/* In Transit Card */}
-          <div className="group relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-500/20 rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-orange-500/20">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl group-hover:bg-orange-500/20 transition-all"></div>
-            <div className="relative">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg">
-                  <FiTruck className="text-white text-2xl" />
-                </div>
-                <span className="text-4xl sm:text-5xl font-bold bg-gradient-to-br from-orange-400 to-amber-400 bg-clip-text text-transparent">
-                  {stats.inTransit}
-                </span>
-              </div>
-              <p className="text-gray-300 font-semibold text-base">In Transit</p>
-              <p className="text-gray-500 text-sm mt-1">On the way</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Tabs and Add Button */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
-          <div className="flex gap-3 flex-1">
+        {/* Simple Tabs */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex gap-2">
             <button
               onClick={() => setActiveTab('packages')}
-              className={`flex-1 sm:flex-none px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
                 activeTab === 'packages' 
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/30' 
-                  : 'backdrop-blur-xl bg-white/5 text-gray-400 border border-white/10 hover:text-white hover:bg-white/10'
+                  ? 'bg-blue-500 text-white' 
+                  : 'text-gray-400 hover:text-white hover:bg-[#111]'
               }`}
             >
-              <FiPackage className="text-lg" />
-              <span>Packages</span>
+              Packages
             </button>
             <button
               onClick={() => setActiveTab('email')}
-              className={`flex-1 sm:flex-none px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition ${
                 activeTab === 'email' 
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/30' 
-                  : 'backdrop-blur-xl bg-white/5 text-gray-400 border border-white/10 hover:text-white hover:bg-white/10'
+                  ? 'bg-blue-500 text-white' 
+                  : 'text-gray-400 hover:text-white hover:bg-[#111]'
               }`}
             >
-              <FiMail className="text-lg" />
-              <span>Email</span>
+              Email
             </button>
           </div>
           
           {activeTab === 'packages' && (
             <button
               onClick={() => setShowForm(!showForm)}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2"
             >
-              {showForm ? <FiX className="text-lg" /> : <FiPlus className="text-lg" />}
-              <span>{showForm ? 'Cancel' : 'Add Package'}</span>
+              {showForm ? <FiX /> : <FiPlus />}
+              {showForm ? 'Cancel' : 'Add Package'}
             </button>
           )}
         </div>
 
         {activeTab === 'packages' && (
           <>
-
             {showForm && (
-              <div className="bg-dark-card border border-dark-border rounded-xl p-4 sm:p-6 lg:p-8 mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-white mb-6">
-                  {editingPackage ? 'Edit Package' : 'Register New Package'}
+              <div className="bg-[#111] border border-gray-800 rounded-lg p-6 mb-4">
+                <h2 className="text-lg font-semibold text-white mb-4">
+                  {editingPackage ? 'Edit Package' : 'Add New Package'}
                 </h2>
                 <PackageForm 
                   formData={formData}
@@ -787,39 +760,39 @@ export default function Admin() {
                 const status = statusConfig[pkg.status] || statusConfig.pending
                 const StatusIcon = status.icon
                 return (
-                  <div key={pkg.id} className="bg-dark-card border border-dark-border rounded-xl p-3 sm:p-4">
+                  <div key={pkg.id} className="bg-[#111] border border-gray-800 rounded-lg p-4">
                     <div className="flex justify-between items-start mb-3">
-                      <div className="flex-1 min-w-0 pr-2">
-                        <p className="text-xs text-gray-400 mb-1">Tracking #</p>
-                        <p className="text-white font-mono text-xs sm:text-sm font-semibold truncate">{pkg.tracking_number}</p>
+                      <div className="flex-1">
+                        <p className="text-xs text-gray-500 mb-1">Tracking</p>
+                        <p className="text-white font-mono text-sm font-medium">{pkg.tracking_number}</p>
                       </div>
-                      <span className={`${status.bg} ${status.color} px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 whitespace-nowrap`}>
+                      <span className={`${status.bg} ${status.color} px-2 py-1 rounded text-xs font-medium flex items-center gap-1`}>
                         <StatusIcon size={12} />
-                        <span className="hidden xs:inline">{status.label}</span>
+                        {status.label}
                       </span>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 mb-3">
+                    <div className="grid grid-cols-2 gap-3 mb-3 text-sm">
                       <div>
-                        <p className="text-xs text-gray-400">Sender</p>
-                        <p className="text-gray-300 text-xs sm:text-sm truncate">{pkg.sender_name}</p>
+                        <p className="text-xs text-gray-500">Sender</p>
+                        <p className="text-gray-300">{pkg.sender_name}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-400">Receiver</p>
-                        <p className="text-gray-300 text-xs sm:text-sm truncate">{pkg.receiver_name}</p>
+                        <p className="text-xs text-gray-500">Receiver</p>
+                        <p className="text-gray-300">{pkg.receiver_name}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 pt-3 border-t border-dark-border">
-                      <button onClick={() => handleEdit(pkg)} className="flex-1 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 py-2 rounded-lg transition flex items-center justify-center gap-1 text-xs sm:text-sm">
+                    <div className="flex gap-2 pt-3 border-t border-gray-800">
+                      <button onClick={() => handleEdit(pkg)} className="flex-1 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 py-2 rounded text-sm transition flex items-center justify-center gap-1">
                         <FiEdit2 size={14} />
-                        <span className="hidden xs:inline">Edit</span>
+                        Edit
                       </button>
-                      <button onClick={() => handleDelete(pkg.id)} className="flex-1 bg-red-500/10 text-red-400 hover:bg-red-500/20 py-2 rounded-lg transition flex items-center justify-center gap-1 text-xs sm:text-sm">
+                      <button onClick={() => handleDelete(pkg.id)} className="flex-1 bg-red-500/10 text-red-400 hover:bg-red-500/20 py-2 rounded text-sm transition flex items-center justify-center gap-1">
                         <FiTrash2 size={14} />
-                        <span className="hidden xs:inline">Delete</span>
+                        Delete
                       </button>
-                      <button onClick={() => setPrintPackage(pkg)} className="flex-1 bg-green-500/10 text-green-400 hover:bg-green-500/20 py-2 rounded-lg transition flex items-center justify-center gap-1 text-xs sm:text-sm">
+                      <button onClick={() => setPrintPackage(pkg)} className="flex-1 bg-green-500/10 text-green-400 hover:bg-green-500/20 py-2 rounded text-sm transition flex items-center justify-center gap-1">
                         <FiPrinter size={14} />
-                        <span className="hidden xs:inline">Print</span>
+                        Print
                       </button>
                     </div>
                   </div>
@@ -828,52 +801,50 @@ export default function Admin() {
             </div>
 
             {/* Desktop Table View */}
-            <div className="hidden lg:block bg-dark-card border border-dark-border rounded-xl overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-dark-bg border-b border-dark-border">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Tracking #</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Sender</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Receiver</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Status</th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {packages.map((pkg) => {
-                      const status = statusConfig[pkg.status] || statusConfig.pending
-                      const StatusIcon = status.icon
-                      return (
-                        <tr key={pkg.id} className="border-b border-dark-border hover:bg-dark-bg transition">
-                          <td className="px-6 py-4 text-white font-mono">{pkg.tracking_number}</td>
-                          <td className="px-6 py-4 text-gray-300">{pkg.sender_name}</td>
-                          <td className="px-6 py-4 text-gray-300">{pkg.receiver_name}</td>
-                          <td className="px-6 py-4">
-                            <span className={`${status.bg} ${status.color} px-3 py-1 rounded-lg text-sm font-semibold flex items-center gap-2 w-fit`}>
-                              <StatusIcon size={14} />
-                              {status.label}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4">
-                            <div className="flex items-center gap-3">
-                              <button onClick={() => handleEdit(pkg)} className="text-blue-400 hover:text-blue-300 transition">
-                                <FiEdit2 />
-                              </button>
-                              <button onClick={() => handleDelete(pkg.id)} className="text-red-400 hover:text-red-300 transition">
-                                <FiTrash2 />
-                              </button>
-                              <button onClick={() => setPrintPackage(pkg)} className="text-green-400 hover:text-green-300 transition">
-                                <FiPrinter />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
+            <div className="hidden lg:block bg-[#111] border border-gray-800 rounded-lg overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-[#0a0a0a] border-b border-gray-800">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500">Tracking</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500">Sender</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500">Receiver</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {packages.map((pkg) => {
+                    const status = statusConfig[pkg.status] || statusConfig.pending
+                    const StatusIcon = status.icon
+                    return (
+                      <tr key={pkg.id} className="border-b border-gray-800 hover:bg-[#0a0a0a] transition">
+                        <td className="px-4 py-3 text-white font-mono text-sm">{pkg.tracking_number}</td>
+                        <td className="px-4 py-3 text-gray-300 text-sm">{pkg.sender_name}</td>
+                        <td className="px-4 py-3 text-gray-300 text-sm">{pkg.receiver_name}</td>
+                        <td className="px-4 py-3">
+                          <span className={`${status.bg} ${status.color} px-2 py-1 rounded text-xs font-medium flex items-center gap-1 w-fit`}>
+                            <StatusIcon size={12} />
+                            {status.label}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <button onClick={() => handleEdit(pkg)} className="text-blue-400 hover:text-blue-300 transition p-1">
+                              <FiEdit2 size={16} />
+                            </button>
+                            <button onClick={() => handleDelete(pkg.id)} className="text-red-400 hover:text-red-300 transition p-1">
+                              <FiTrash2 size={16} />
+                            </button>
+                            <button onClick={() => setPrintPackage(pkg)} className="text-green-400 hover:text-green-300 transition p-1">
+                              <FiPrinter size={16} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
             </div>
           </>
         )}
